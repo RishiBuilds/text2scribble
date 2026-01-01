@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text-2-Scribble</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=Caveat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      canvas {
+        display: inline-block;
+      }
+      .page {
+        position: relative;
+        width: 500px;
+        height: 600px;
+        display: inline-block;
+        box-sizing: border-box;
+        background: linear-gradient(to right, #f2f2f2, #e6e6e6);
+        border-radius: 4px;
+        padding: 14px 18px;
+        margin: 0 8px 0 0;
+        transform: rotateY(-5deg);
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        box-shadow: 2px 0 6px rgba(0, 0, 0, 0.08),
+          8px 0 20px rgba(0, 0, 0, 0.12);
+        will-change: transform, background, box-shadow;
+        transition: transform 0.7s ease, box-shadow 0.7s ease,
+          background 0.7s ease;
+      }
+
+      .paper {
+        background-color: #fafafa;
+        background-image: linear-gradient(#cfcfcf 0.08em, transparent 0.1em);
+        background-size: 100% 1.6em;
+        height: 100%;
+        outline: none;
+        font-family: "Kalam", cursive;
+        color: #2b2b2b;
+        padding: 24px 32px;
+        line-height: 1.6em;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        display: none;
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.45),
+          rgba(0, 0, 0, 0.05)
+        );
+        transition: opacity 0.4s ease;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+      }
+      .col {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <label for="handwriting-font">Handwriting Font</label>
+    <select id="handwriting-font">
+      <option value="'Kalam', cursive" selected>Kalam</option>
+      <option value="'Patrick Hand', cursive">Patrick Hand</option>
+      <option value="'Caveat', cursive">Caveat</option>
+    </select>
+    <br />
+
+    <button class="generate-image">Generate Image</button><br />
+    <small>
+      * After clicking Generate Image, right-click the image and click “Save
+      image as…”
+    </small>
+    <br /><br />
+
+    <div class="row">
+      <div class="col">
+        <div class="page" id="capture-page">
+          <div class="overlay"></div>
+
+          <div class="paper" contenteditable="true">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus
+            dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra
+            efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque
+            sed tristique non, hendrerit in erat.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <img id="output-image" style="max-width: 500px; display: none" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+      const fontSelect = document.querySelector("#handwriting-font");
+      const generateBtn = document.querySelector(".generate-image");
+      const paper = document.querySelector(".paper");
+      const page = document.querySelector(".page");
+      const overlay = document.querySelector(".overlay");
+      const output = document.querySelector("#output-image");
+
+      fontSelect.addEventListener("change", (e) => {
+        paper.style.fontFamily = e.target.value;
+      });
+
+      generateBtn.addEventListener("click", async () => {
+        overlay.style.display = "none";
+        paper.style.caretColor = "transparent";
+        paper.style.backgroundSize = "100% 1.6em";
+
+        const canvas = await html2canvas(page, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: null,
+        });
+
+        output.src = canvas.toDataURL();
+        output.style.display = "block";
+
+        paper.style.backgroundSize = "";
+        paper.style.caretColor = "";
+        overlay.style.display = "";
+      });
+    </script>
+  </body>
+</html>
