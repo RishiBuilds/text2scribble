@@ -153,7 +153,9 @@
             
             html2canvas(document.querySelector(".page")).then(canvas => {
                 document.querySelector('.output').innerHTML = '';
-                document.querySelector('.output').appendChild(canvas);
+                const img = document.createElement('img');
+                img.src = canvas.toDataURL("image/jpeg");
+                document.querySelector('.output').appendChild(img);
                 document.querySelector('.paper').style.backgroundSize = '100% 100%, 100% 1.5em';
                 document.querySelector('.overlay').style.display = 'none';
             });
