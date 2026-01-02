@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.form-container {
+    padding: 60px 100px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+.form-container select {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    background-color: #eee;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.form-container button {
+    border: none;
+    background-color: #09f;
+    padding: 10px 20px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.form-container button:hover {
+    background-color: #0088dd;
+}
+
+.form-container small {
+    display: block;
+    margin-top: 10px;
+    color: #666;
+}
+
+.page {
+    padding: 14px 15px;
+    position: relative;
+    background: linear-gradient(to right, #eee, #ddd);
+    margin: 20px 8px 20px 0px;
+    transform: rotateY(-5deg);
+    width: 500px;
+    display: inline-block;
+    height: 600px;
+    box-sizing: border-box;
+    will-change: transform, background-color, box-shadow;
+    transform-origin: 0% 50%;
+    transform-style: preserve-3d;
+    transition: all .7s ease;
+    transition-property: transform, background-color, box-shadow;
+}
+
+.paper {
+    background-image: 
+        linear-gradient(to right, #e36b6b 2px, transparent 2px),
+        linear-gradient(#999 0.08em, transparent 0.1em);
+    background-position: 32px 0, 0 0;
+    background-size: 100% 100%, 100% 1.5em;
+    height: 100%;
+    outline: none;
+    font-family: 'Homemade Apple', cursive;
+    color: #1a1a1a;
+    padding-top: 8px;
+    padding-left: 48px;
+    padding-right: 20px;
+    line-height: 1.5em;
+    word-spacing: 0.1em;
+}
+
+.paper-holder {
+    background-size: unset;
+    background-color: #fff;
+    background-image: none;
+}
+
+.paper * {
+    letter-spacing: 0.02em;
+    text-shadow: 
+        0.3px 0.3px 0.2px rgba(0,0,0,0.15),
+        -0.1px -0.1px 0.1px rgba(0,0,0,0.05);
+}
+
+.paper h1, .paper h2, .paper h3 {
+    font-size: 1.35em;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    margin-bottom: 0.9em;
+    margin-top: 0.6em;
+    letter-spacing: 0.03em;
+    font-weight: normal;
+}
+
+.paper p {
+    margin-bottom: 1.3em;
+    transform: translateY(0.8px) rotate(-0.05deg);
+}
+
+.paper p:nth-child(2n) {
+    letter-spacing: 0.025em;
+    transform: translateY(-0.4px) rotate(0.08deg);
+    word-spacing: 0.12em;
+}
+
+.paper p:nth-child(3n) {
+    letter-spacing: 0.015em;
+    transform: translateY(0.5px) rotate(-0.03deg);
+    word-spacing: 0.08em;
+}
+
+.paper p:nth-child(4n) {
+    letter-spacing: 0.028em;
+    transform: translateY(-0.2px) rotate(0.04deg);
+}
+
+.paper span:nth-child(odd) {
+    display: inline-block;
+    transform: rotate(-0.3deg);
+}
+
+.paper span:nth-child(even) {
+    display: inline-block;
+    transform: rotate(0.2deg);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+    background-image: linear-gradient(to right, #0007, #0001);
+}
+
+.row {
+    display: flex;
+}
+
+.col {
+    flex: 1;
+}
+
+.output img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+    
+    .row {
+        display: block;
+    }
+    
+    .output {
+        margin-top: 20px;
+    }
+    
+    .output img {
+        width: 100%;
+        max-width: 300px;
+    }
+}
