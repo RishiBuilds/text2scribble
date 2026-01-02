@@ -36,11 +36,12 @@
         background-color: #fafafa;
         background-image: linear-gradient(#cfcfcf 0.08em, transparent 0.1em);
         background-size: 100% 1.6em;
+        background-position: 0 1.2em;
         height: 100%;
         outline: none;
         font-family: "Kalam", cursive;
+        padding-top: 0px;
         color: #2b2b2b;
-        padding: 24px 32px;
         line-height: 1.6em;
       }
       .overlay {
@@ -68,9 +69,9 @@
   <body>
     <label for="handwriting-font">Handwriting Font</label>
     <select id="handwriting-font">
-      <option value="'Kalam', cursive" selected>Kalam</option>
-      <option value="'Patrick Hand', cursive">Patrick Hand</option>
-      <option value="'Caveat', cursive">Caveat</option>
+      <option value="'Kalam', cursive" selected>Kalam (Neat)</option>
+      <option value="'Patrick Hand', cursive">Patrick Hand (Casual)</option>
+      <option value="'Caveat', cursive">Caveat (Natural)</option>
     </select>
     <br />
 
@@ -83,9 +84,9 @@
 
     <div class="row">
       <div class="col">
-        <div class="page" id="capture-page">
+        <div class="page">
           <div class="overlay"></div>
-
+          
           <div class="paper" contenteditable="true">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus
             dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra
