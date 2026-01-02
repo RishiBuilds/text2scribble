@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text-2-Scribble</title>
-    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Liu+Jian+Mao+Cao&family=Long+Cang&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Long+Cang&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         canvas {
             display: inline-block;
@@ -28,15 +28,46 @@
             transition-property: transform, background-color, box-shadow;
         }
         .paper {
-            background-image: linear-gradient(#999 0.05em, transparent 0.1em);
+            background-image: 
+                linear-gradient(to right, #e36b6b 2px, transparent 2px),
+                linear-gradient(#999 0.08em, transparent 0.1em);
+            background-position: 32px 0, 0 0;
+            background-size: 100% 100%, 100% 1.5em;
             height: 100%;
             top: 0;
             left: 0;
             outline: none;
             font-family: 'Homemade Apple', cursive;
             color: #333;
-            padding-top: 0px;
+            padding-top: 8px;
+            padding-left: 48px;
+            padding-right: 20px;
             line-height: 1.5em;
+            letter-spacing: 0.3px;
+            text-shadow: 0.3px 0.3px 0 rgba(0,0,0,0.12);
+        }
+        
+        .paper h1, .paper h2, .paper h3 {
+            font-size: 1.3em;
+            text-decoration: underline;
+            margin-bottom: 0.8em;
+            margin-top: 0.5em;
+            letter-spacing: 0.4px;
+        }
+        
+        .paper p {
+            margin-bottom: 1.2em;
+            transform: translateY(0.5px);
+        }
+        
+        .paper p:nth-child(2n) {
+            letter-spacing: 0.35px;
+            transform: translateY(-0.3px);
+        }
+        
+        .paper p:nth-child(3n) {
+            letter-spacing: 0.25px;
+            transform: translateY(0.4px);
         }
         .overlay {
             position: absolute;
@@ -53,13 +84,19 @@
         .col {
             flex: 1;
         }
+        @media (max-width: 768px){
+          .row{display: block}
+          .output{
+            margin-top: 20px;
+        }
+      }
     </style>
 </head>
 <body>
     <label>Handwriting Font</label>
     <select id="handwriting-font">
         <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
-        <option value="'Liu Jian Mao Cao', cursive">Caveat</option>
+        <option value="'Caveat', cursive">Caveat</option>
         <option value="'Long Cang', cursive">Long Cang</option>
     </select>
     <br>
@@ -70,7 +107,7 @@
     <div class="row">
         <div class="col">
             <div class="page">
-                <div class="paper" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna.r adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper, maximus convallis sem. Sed nec lacinia lorem. Duis arcu metus, cursus non odio quis, tincidunt tempor augue. Donec eget vestibulum risus. Nullam blandit quis est vitae feugiat.
+                <div class="paper" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna.r adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.
                     <div class="overlay"></div>
                 </div>
             </div>
@@ -86,12 +123,12 @@
         
         document.querySelector('.generate-image').addEventListener('click', e => {
             document.querySelector('.overlay').style.display = 'block';
-            document.querySelector('.paper').style.backgroundSize = '100% 1.5em';
+            document.querySelector('.paper').style.backgroundSize = '100% 100%, 100% 1.5em';
             
             html2canvas(document.querySelector(".page")).then(canvas => {
                 document.querySelector('.output').innerHTML = '';
                 document.querySelector('.output').appendChild(canvas);
-                document.querySelector('.paper').style.backgroundSize = 'unset';
+                document.querySelector('.paper').style.backgroundSize = '100% 100%, 100% 1.5em';
                 document.querySelector('.overlay').style.display = 'none';
             });
         })
