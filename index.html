@@ -38,36 +38,62 @@
             left: 0;
             outline: none;
             font-family: 'Homemade Apple', cursive;
-            color: #333;
+            color: #1a1a1a;
             padding-top: 8px;
             padding-left: 48px;
             padding-right: 20px;
             line-height: 1.5em;
-            letter-spacing: 0.3px;
-            text-shadow: 0.3px 0.3px 0 rgba(0,0,0,0.12);
+            word-spacing: 0.1em;
+        }
+        
+        .paper * {
+            letter-spacing: 0.02em;
+            text-shadow: 
+                0.3px 0.3px 0.2px rgba(0,0,0,0.15),
+                -0.1px -0.1px 0.1px rgba(0,0,0,0.05);
         }
         
         .paper h1, .paper h2, .paper h3 {
-            font-size: 1.3em;
+            font-size: 1.35em;
             text-decoration: underline;
-            margin-bottom: 0.8em;
-            margin-top: 0.5em;
-            letter-spacing: 0.4px;
+            text-decoration-thickness: 1.5px;
+            text-underline-offset: 3px;
+            margin-bottom: 0.9em;
+            margin-top: 0.6em;
+            letter-spacing: 0.03em;
+            font-weight: normal;
         }
         
         .paper p {
-            margin-bottom: 1.2em;
-            transform: translateY(0.5px);
+            margin-bottom: 1.3em;
+            transform: translateY(0.8px) rotate(-0.05deg);
         }
         
         .paper p:nth-child(2n) {
-            letter-spacing: 0.35px;
-            transform: translateY(-0.3px);
+            letter-spacing: 0.025em;
+            transform: translateY(-0.4px) rotate(0.08deg);
+            word-spacing: 0.12em;
         }
         
         .paper p:nth-child(3n) {
-            letter-spacing: 0.25px;
-            transform: translateY(0.4px);
+            letter-spacing: 0.015em;
+            transform: translateY(0.5px) rotate(-0.03deg);
+            word-spacing: 0.08em;
+        }
+        
+        .paper p:nth-child(4n) {
+            letter-spacing: 0.028em;
+            transform: translateY(-0.2px) rotate(0.04deg);
+        }
+        
+        .paper span:nth-child(odd) {
+            display: inline-block;
+            transform: rotate(-0.3deg);
+        }
+        
+        .paper span:nth-child(even) {
+            display: inline-block;
+            transform: rotate(0.2deg);
         }
         .overlay {
             position: absolute;
