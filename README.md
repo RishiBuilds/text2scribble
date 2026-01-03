@@ -16,6 +16,27 @@ I created Text2Scribble because:
 - Digital notes don't always "look" personal or authentic
 - I wanted a clean, frontend-only project that solves a real, everyday problem
 
+### How to Add Your Own Handwriting
+
+Want the output to look exactly like **your** handwriting? You can do that in just a few steps.
+
+#### Create a handwriting font
+
+1. Visit **Calligraphr**: [https://calligraphr.com](https://calligraphr.com)
+2. Write the characters on their template and upload it
+3. Export your handwriting as a `.ttf` font file
+
+#### Upload your font
+
+1. Click the **Upload Handwriting** button in Text2Scribble
+2. Select your generated `.ttf` file
+3. Done!
+
+Your personal handwriting instantly appears as a selectable font. Generate the image and export it like any other style.
+
+**Tip:** The cleaner you write on Calligraphr's template, the more realistic your final handwriting will look.
+
+
 ### How Image Generation Works
 
 Text2Scribble uses **html2canvas** to capture the handwritten page and export it as an image.
