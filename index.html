@@ -15,10 +15,15 @@
             <option value="'Caveat', cursive">Caveat</option>
             <option value="'Long Cang', cursive">Long Cang</option>
         </select>
-<br>or<br>
-    <label for="font-file">Upload your handwriting font (BETA) <small>(<a target="_blank" rel="noopener noreferer" href="https://www.1001fonts.com/create-your-own-font.html">Create your own font</a>)</small></label>
-     </label>
-    <input type="file" id="font-file" />   
+
+        <p style="margin: 15px 0; color: #666;">— OR —</p>
+
+        <label for="font-file">Upload Your Own Handwriting Font <small>(supports .ttf, .otf, .woff)</small></label>
+        <small style="display: block; margin-bottom: 8px; color: #666;">
+            Create your own font at <a target="_blank" rel="noopener noreferrer" href="https://www.calligraphr.com">Calligraphr.com</a>
+        </small>
+        <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2" />
+        
         <label for="ink-color">Pen Ink Color</label>
         <select id="ink-color">
             <option value="#000F55" selected>Blue</option>
@@ -26,26 +31,25 @@
             <option value="#0D4C92">Dark Blue</option>
         </select>
         
-<div class="row responsive-row">
-      <div class="col">
-        <label for="font-size">fontSize</label><br>
-        <input type="number" min="0" value="12" id="font-size" />&nbsp; pt
-        <br><br>
-      </div>
-      <div class="col">
-        <label for="top-padding">Vertical position of text</label><br>
-        <input type="number" min="0" value="0" id="top-padding" />&nbsp; px
-        <br><br>
-      </div>
-      <div class="col">
-        <label for="word-spacing">Word Spacing</label><br>
-        <input type="number" min="0" value="3" id="word-spacing" />&nbsp; px
-        <br><br>
-      </div>
-    </div>
+        <div class="row responsive-row">
+            <div class="col">
+                <label for="font-size">Font Size</label><br>
+                <input type="number" min="8" max="24" value="12" id="font-size" />&nbsp;pt
+            </div>
+            <div class="col">
+                <label for="top-padding">Vertical Position</label><br>
+                <input type="number" min="0" max="50" value="0" id="top-padding" />&nbsp;px
+            </div>
+            <div class="col">
+                <label for="word-spacing">Word Spacing</label><br>
+                <input type="number" min="0" max="20" value="3" id="word-spacing" />&nbsp;px
+            </div>
+        </div>
 
         <button class="generate-image">Generate Handwriting Image</button>
-        <small>* Right-click the generated image and select "Save image as" to download</small>
+        <small style="display: block; margin-top: 8px; color: #666;">
+             Tip: Right-click the generated image and select "Save image as..." to download
+        </small>
         
         <div class="row">
             <div class="col">
