@@ -15,7 +15,11 @@
             <option value="'Caveat', cursive">Caveat</option>
             <option value="'Long Cang', cursive">Long Cang</option>
         </select>
-        
+
+        <br>or<br><br>
+
+        <label for="font-file">Upload your handwriting font (BETA) <small>(<a target="_blank" rel="noopener noreferer" href="https://www.1001fonts.com/create-your-own-font.html">Create your own font</a>)</small></label>
+        <input type="file" id="font-file" />   
         <label for="ink-color">Pen Ink Color</label>
         <select id="ink-color">
             <option value="#000F55" selected>Blue</option>
@@ -23,6 +27,24 @@
             <option value="#0D4C92">Dark Blue</option>
         </select>
         
+<div class="row responsive-row">
+      <div class="col">
+        <label for="font-size">fontSize</label><br>
+        <input type="number" min="0" value="12" id="font-size" />&nbsp; pt
+        <br><br>
+      </div>
+      <div class="col">
+        <label for="top-padding">Vertical position of text</label><br>
+        <input type="number" min="0" value="0" id="top-padding" />&nbsp; px
+        <br><br>
+      </div>
+      <div class="col">
+        <label for="word-spacing">Word Spacing</label><br>
+        <input type="number" min="0" value="3" id="word-spacing" />&nbsp; px
+        <br><br>
+      </div>
+    </div>
+
         <button class="generate-image">Generate Handwriting Image</button>
         <small>* Right-click the generated image and select "Save image as" to download</small>
         

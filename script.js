@@ -1,5 +1,22 @@
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+function readFile(fileObj) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        const newFont = new FontFace('temp-font', e.target.result);
+        newFont.load()
+            .then(loadedFace => {
+                document.fonts.add(loadedFace);
+                document.querySelector('.text-area').style.fontFamily = 'temp-font';
+            })
+            .catch(err => {
+                console.error('Font loading failed:', err);
+                alert('Failed to load font file');
+            });
+    }
+    reader.readAsArrayBuffer(fileObj);
+}
+
 function applyPaperStyles() {
     if (isMobile) {
         document.querySelector('.page').style.transform = 'scale(1)';
@@ -30,6 +47,24 @@ document.querySelector('#handwriting-font').addEventListener('change', e => {
 
 document.querySelector('#ink-color').addEventListener('change', e => {
     document.querySelector('.text-area').style.color = e.target.value;
+});
+
+document.querySelector('#font-size').addEventListener('change', e => {
+    document.querySelector('.text-area').style.fontSize = e.target.value + 'pt';
+});
+
+document.querySelector('#top-padding').addEventListener('change', e => {
+    document.querySelector('.text-area').style.paddingTop = e.target.value + 'px';
+});
+
+document.querySelector('#word-spacing').addEventListener('change', e => {
+    document.querySelector('.text-area').style.wordSpacing = e.target.value + 'px';
+});
+
+document.querySelector('#font-file').addEventListener('change', e => {
+    if (e.target.files[0]) {
+        readFile(e.target.files[0]);
+    }
 });
 
 document.querySelector('.generate-image').addEventListener('click', e => {
