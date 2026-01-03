@@ -1,3 +1,19 @@
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+function applyPaperStyles() {
+    if (isMobile) {
+        document.querySelector('.page').style.transform = 'scale(1)';
+    }
+}
+
+function removePaperStyles() {
+    document.querySelector('.overlay').style.display = 'none';
+    document.querySelector('.paper').classList.add('paper-holder');
+    if (isMobile) {
+        document.querySelector('.page').style.transform = 'scale(0.6)';
+    }
+}
+
 document.querySelector('#handwriting-font').addEventListener('change', e => {
     document.querySelector('.paper').style.fontFamily = e.target.value;
 });
@@ -11,6 +27,7 @@ document.querySelector('.generate-image').addEventListener('click', e => {
     button.disabled = true;
     button.textContent = 'Generating...';
     
+    applyPaperStyles();
     document.querySelector('.overlay').style.display = 'block';
     document.querySelector('.paper').classList.remove('paper-holder');
     
@@ -23,8 +40,8 @@ document.querySelector('.generate-image').addEventListener('click', e => {
         img.src = canvas.toDataURL("image/png");
         img.alt = "Generated handwriting image";
         document.querySelector('.output').appendChild(img);
-        document.querySelector('.paper').classList.add('paper-holder');
-        document.querySelector('.overlay').style.display = 'none';
+        
+        removePaperStyles();
         button.disabled = false;
         button.textContent = 'Generate Handwriting Image';
         location.href = '#output';
