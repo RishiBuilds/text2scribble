@@ -6,7 +6,7 @@
 
 .form-container {
     padding: 60px 100px;
-    font-family: Tahoma, Geneva, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .form-container label {
@@ -68,7 +68,7 @@
     transition-property: transform, background-color, box-shadow;
 }
 
-.paper {
+.text-area {
     background-image: 
         linear-gradient(to right, #e36b6b 2px, transparent 2px),
         linear-gradient(#999 0.08em, transparent 0.1em);
@@ -78,27 +78,22 @@
     outline: none;
     font-family: 'Homemade Apple', cursive;
     color: #000F55;
-    padding-top: 8px;
+    padding-top: 0.3em;
     padding-left: 48px;
     padding-right: 20px;
     line-height: 1.5em;
     word-spacing: 0.1em;
+    box-sizing: border-box;
 }
 
-.paper-holder {
-    background-size: unset;
-    background-color: #fff;
-    background-image: none;
-}
-
-.paper * {
+.text-area * {
     letter-spacing: 0.02em;
     text-shadow: 
         0.3px 0.3px 0.2px rgba(0,0,0,0.15),
         -0.1px -0.1px 0.1px rgba(0,0,0,0.05);
 }
 
-.paper h1, .paper h2, .paper h3 {
+.text-area h1, .text-area h2, .text-area h3 {
     font-size: 1.35em;
     text-decoration: underline;
     text-decoration-thickness: 1.5px;
@@ -109,34 +104,34 @@
     font-weight: normal;
 }
 
-.paper p {
+.text-area p {
     margin-bottom: 1.3em;
     transform: translateY(0.8px) rotate(-0.05deg);
 }
 
-.paper p:nth-child(2n) {
+.text-area p:nth-child(2n) {
     letter-spacing: 0.025em;
     transform: translateY(-0.4px) rotate(0.08deg);
     word-spacing: 0.12em;
 }
 
-.paper p:nth-child(3n) {
+.text-area p:nth-child(3n) {
     letter-spacing: 0.015em;
     transform: translateY(0.5px) rotate(-0.03deg);
     word-spacing: 0.08em;
 }
 
-.paper p:nth-child(4n) {
+.text-area p:nth-child(4n) {
     letter-spacing: 0.028em;
     transform: translateY(-0.2px) rotate(0.04deg);
 }
 
-.paper span:nth-child(odd) {
+.text-area span:nth-child(odd) {
     display: inline-block;
     transform: rotate(-0.3deg);
 }
 
-.paper span:nth-child(even) {
+.text-area span:nth-child(even) {
     display: inline-block;
     transform: rotate(0.2deg);
 }

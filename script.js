@@ -8,18 +8,28 @@ function applyPaperStyles() {
 
 function removePaperStyles() {
     document.querySelector('.overlay').style.display = 'none';
-    document.querySelector('.paper').classList.add('paper-holder');
     if (isMobile) {
         document.querySelector('.page').style.transform = 'scale(0.6)';
     }
 }
 
+function smoothlyScrollTo(hashval) {
+    let target = document.querySelector(hashval);
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        history.pushState(null, null, hashval);
+    }
+}
+
 document.querySelector('#handwriting-font').addEventListener('change', e => {
-    document.querySelector('.paper').style.fontFamily = e.target.value;
+    document.querySelector('.text-area').style.fontFamily = e.target.value;
 });
 
 document.querySelector('#ink-color').addEventListener('change', e => {
-    document.querySelector('.paper').style.color = e.target.value;
+    document.querySelector('.text-area').style.color = e.target.value;
 });
 
 document.querySelector('.generate-image').addEventListener('click', e => {
@@ -29,7 +39,6 @@ document.querySelector('.generate-image').addEventListener('click', e => {
     
     applyPaperStyles();
     document.querySelector('.overlay').style.display = 'block';
-    document.querySelector('.paper').classList.remove('paper-holder');
     
     html2canvas(document.querySelector(".page"), {
         scale: 2,
@@ -44,6 +53,21 @@ document.querySelector('.generate-image').addEventListener('click', e => {
         removePaperStyles();
         button.disabled = false;
         button.textContent = 'Generate Handwriting Image';
-        location.href = '#output';
+        smoothlyScrollTo('#output');
+    }).catch(err => {
+        alert("Something went wrong :(");
+        console.error(err);
+        removePaperStyles();
+        button.disabled = false;
+        button.textContent = 'Generate Handwriting Image';
     });
 });
+
+const anchorlinks = document.querySelectorAll('a[href^="#"]');
+for (let item of anchorlinks) {
+    item.addEventListener('click', (e) => {
+        let hashval = item.getAttribute('href');
+        smoothlyScrollTo(hashval);
+        e.preventDefault();
+    });
+}
