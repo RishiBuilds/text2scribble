@@ -40,6 +40,11 @@
     background-color: #0088dd;
 }
 
+.form-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 .form-container small {
     display: block;
     margin-top: 10px;

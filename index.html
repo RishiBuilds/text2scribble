@@ -20,15 +20,16 @@
         <select id="ink-color">
             <option value="#000F55" selected>Blue</option>
             <option value="#333">Black</option>
+            <option value="#0D4C92">Dark Blue</option>
         </select>
         
-        <button class="generate-image">Generate Image</button>
-        <small>* After clicking generate image button, right click image and click save image or download image</small>
+        <button class="generate-image">Generate Handwriting Image</button>
+        <small>* Right-click the generated image and select "Save image as" to download</small>
         
         <div class="row">
             <div class="col">
                 <div class="page">
-                    <div class="paper paper-holder" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna.r adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.
+                    <div class="paper paper-holder" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna. In adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.
                         <div class="overlay"></div>
                     </div>
                 </div>
@@ -48,16 +49,26 @@
         });
         
         document.querySelector('.generate-image').addEventListener('click', e => {
+            const button = e.target;
+            button.disabled = true;
+            button.textContent = 'Generating...';
+            
             document.querySelector('.overlay').style.display = 'block';
             document.querySelector('.paper').classList.remove('paper-holder');
             
-            html2canvas(document.querySelector(".page")).then(canvas => {
+            html2canvas(document.querySelector(".page"), {
+                scale: 2,
+                useCORS: true
+            }).then(canvas => {
                 document.querySelector('.output').innerHTML = '';
                 const img = document.createElement('img');
-                img.src = canvas.toDataURL("image/jpeg");
+                img.src = canvas.toDataURL("image/png");
+                img.alt = "Generated handwriting image";
                 document.querySelector('.output').appendChild(img);
                 document.querySelector('.paper').classList.add('paper-holder');
                 document.querySelector('.overlay').style.display = 'none';
+                button.disabled = false;
+                button.textContent = 'Generate Handwriting Image';
                 location.href = '#output';
             });
         });
