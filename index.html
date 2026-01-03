@@ -3,66 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert typed text into realistic handwriting. Customize fonts, colors, and spacing to create authentic handwritten documents.">
     <title>Text-2-Scribble</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Long+Cang&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="form-container">
-        <label for="handwriting-font">Handwriting Font</label>
-        <select id="handwriting-font">
-            <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
-            <option value="'Caveat', cursive">Caveat</option>
-            <option value="'Long Cang', cursive">Long Cang</option>
-        </select>
-
-        <p style="margin: 15px 0; color: #666;">— OR —</p>
-
-        <label for="font-file">Upload Your Own Handwriting Font <small>(supports .ttf, .otf, .woff)</small></label>
-        <small style="display: block; margin-bottom: 8px; color: #666;">
-            Create your own font at <a target="_blank" rel="noopener noreferrer" href="https://www.calligraphr.com">Calligraphr.com</a>
-        </small>
-        <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2" />
         
-        <label for="ink-color">Pen Ink Color</label>
-        <select id="ink-color">
-            <option value="#000F55" selected>Blue</option>
-            <option value="#333">Black</option>
-            <option value="#0D4C92">Dark Blue</option>
-        </select>
-        
-        <div class="row responsive-row">
-            <div class="col">
-                <label for="font-size">Font Size</label><br>
-                <input type="number" min="8" max="24" value="12" id="font-size" />&nbsp;pt
+        <section class="controls-section">
+            <div class="control-group">
+                <label for="handwriting-font">Handwriting Font</label>
+                <select id="handwriting-font">
+                    <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
+                    <option value="'Caveat', cursive">Caveat</option>
+                    <option value="'Long Cang', cursive">Long Cang</option>
+                </select>
             </div>
-            <div class="col">
-                <label for="top-padding">Vertical Position</label><br>
-                <input type="number" min="0" max="50" value="0" id="top-padding" />&nbsp;px
-            </div>
-            <div class="col">
-                <label for="word-spacing">Word Spacing</label><br>
-                <input type="number" min="0" max="20" value="3" id="word-spacing" />&nbsp;px
-            </div>
-        </div>
 
-        <button class="generate-image">Generate Handwriting Image</button>
-        <small style="display: block; margin-top: 8px; color: #666;">
-            Tip: Right-click the generated image and select "Save image as..." to download
-        </small>
-        
-        <div class="row">
-            <div class="col">
-                <div class="page">
-                    <div class="overlay"></div>
-                    <div class="text-area" contenteditable="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna. In adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.</div>
+            <p class="separator" role="presentation">— OR —</p>
+
+            <div class="control-group">
+                <label for="font-file">
+                    Upload Your Own Handwriting Font 
+                    <small class="label-hint">(supports .ttf, .otf, .woff)</small>
+                </label>
+                <small id="font-help" class="help-text">
+                    Create your own font at <a target="_blank" rel="noopener noreferrer" href="https://www.calligraphr.com">Calligraphr.com</a>
+                </small>
+                <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2"/>
+            </div>
+            
+            <div class="control-group">
+                <label for="ink-color">Pen Ink Color</label>
+                <select id="ink-color">
+                    <option value="#000F55" selected>Blue</option>
+                    <option value="#333">Black</option>
+                    <option value="#0D4C92">Dark Blue</option>
+                </select>
+            </div>
+            
+            <div class="row responsive-row">
+                <div class="col">
+                    <label for="font-size">Font Size</label>
+                    <div class="input-group">
+                        <input type="number" min="8" max="24" value="12" id="font-size"/>
+                        <span class="unit">pt</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="top-padding">Vertical Position</label>
+                    <div class="input-group">
+                        <input type="number" min="0" max="50" value="0" id="top-padding"/>
+                        <span class="unit">px</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="word-spacing">Word Spacing</label>
+                    <div class="input-group">
+                        <input type="number" min="0" max="20" value="3" id="word-spacing"/>
+                        <span class="unit">px</span>
+                    </div>
                 </div>
             </div>
-            <div id="output" class="col output"></div>
+
+            <button class="generate-image" type="button">
+                Generate Handwriting Image
+            </button>
+            <small class="help-text download-tip">
+                <strong>Tip:</strong> Right-click the generated image and select "Save image as..." to download
+            </small>
+        </section>
+        
+        <div class="row content-row">
+            <div class="col editor-col">
+                <div class="page" role="region">
+                    <div class="overlay" aria-hidden="true"></div>
+                    <div class="text-area" 
+                         contenteditable="true" 
+                         role="textbox" 
+                         aria-multiline="true"
+                         spellcheck="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna. In adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.</div>
+                </div>
+            </div>
+            <div id="output" class="col output" role="region" aria-live="polite"></div>
         </div>
     </main>
     
-    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script defer src="script.js"></script>
 </body>
 </html>
