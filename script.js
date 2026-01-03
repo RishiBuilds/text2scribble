@@ -3,7 +3,7 @@ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 function readFile(fileObj) {
     const reader = new FileReader();
     reader.onload = e => {
-        const newFont = new FontFace('temp-font', e.target.result);
+        const newFont = new FontFace('temp-font', `url(${e.target.result})`);
         newFont.load()
             .then(loadedFace => {
                 document.fonts.add(loadedFace);
@@ -11,10 +11,10 @@ function readFile(fileObj) {
             })
             .catch(err => {
                 console.error('Font loading failed:', err);
-                alert('Failed to load font file');
+                alert('Failed to load font file. Please make sure it\'s a valid font file.');
             });
     }
-    reader.readAsArrayBuffer(fileObj);
+    reader.readAsDataURL(fileObj);
 }
 
 function applyPaperStyles() {
@@ -90,7 +90,7 @@ document.querySelector('.generate-image').addEventListener('click', e => {
         button.textContent = 'Generate Handwriting Image';
         smoothlyScrollTo('#output');
     }).catch(err => {
-        alert("Something went wrong :(");
+        alert("Something went wrong :( Please try again.");
         console.error(err);
         removePaperStyles();
         button.disabled = false;

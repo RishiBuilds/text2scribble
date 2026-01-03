@@ -60,7 +60,7 @@
 .page {
     padding: 14px 15px;
     position: relative;
-    background: linear-gradient(to right, #eee, #ddd);
+    background: linear-gradient(to right, #fff, #fff);
     margin: 20px 8px 20px 0px;
     transform: rotateY(-5deg);
     width: 500px;
@@ -171,7 +171,6 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Add better responsive handling for mobile */
 @media (max-width: 768px) {
     .form-container {
         padding: 20px;
@@ -199,18 +198,16 @@
     }
 }
 
-/* Add better focus states for accessibility */
 .form-container select:focus,
 .form-container input[type="number"]:focus {
     outline: 2px solid #09f;
     outline-offset: 2px;
 }
 
-/* Better mobile experience for text area */
 @media (max-width: 768px) {
     .text-area {
         padding-left: 30px;
         padding-right: 10px;
-        font-size: 10pt !important; /* Override dynamic font size on mobile for better experience */
+        font-size: 10pt !important; 
     }
 }
