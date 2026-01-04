@@ -4,20 +4,29 @@
   top: 20px;
   right: 30px;
   border: none;
-  background: var(--elevation-background);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--field-borders);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  transition: background 0.3s, transform 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
 }
 
 .dark-mode-toggle:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--primary-color);
+}
+
+.dark-mode-toggle:active {
+  transform: scale(0.95);
 }
 
 body:not(.user-is-tabbing) .dark-mode-toggle:focus {
@@ -26,8 +35,9 @@ body:not(.user-is-tabbing) .dark-mode-toggle:focus {
 
 .dark-mode-toggle .moon,
 .dark-mode-toggle .sun {
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
+  transition: transform 0.3s ease;
 }
 
 body .dark-mode-toggle .moon {
@@ -46,91 +56,102 @@ body.dark .dark-mode-toggle .sun {
   display: none;
 }
 
-.switch-toggle {
-  position: relative;
-  display: block;
-  margin-top: 6px;
-  cursor: pointer;
-  width: 50px;
-  height: 25px;
-  border-radius: 25px;
-  background-color: var(--elevation-background);
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.switch-toggle input {
-  position: relative;
-  top: 4px;
-  left: 4px;
-  z-index: -1;
+.toast {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+  animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s forwards;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.switch-toggle div {
-  position: absolute;
-  border-radius: 50%;
-  background-color: #9994;
-  transition: 0.1s ease;
+.toast::before {
+  content: "✓";
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-.switch-toggle input:focus+div {
-  outline: 2px solid var(--primary-color);
+.toast.error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
 }
 
-.switch-toggle input:checked+div {
-  left: 28px;
-  background-color: #999f;
+.toast.error::before {
+  content: "✕";
 }
 
-.switch-toggle.outer div {
-  width: 16px;
-  height: 16px;
-  top: 4px;
-  left: 5px;
+@keyframes slideIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.page-action-btn.copy-btn:hover {
+  background: #f0fdf4;
+  color: #10b981;
+  border-color: #10b981;
 }
 
 @media (max-width: 768px) {
   .dark-mode-toggle {
-    right: 15px;
-    top: 15px;
-    width: 40px;
-    height: 40px;
+    right: 16px;
+    top: 16px;
+    width: 44px;
+    height: 44px;
   }
-}
 
-.popup-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #000;
-  z-index: 999999;
-  color: #ddd;
-  padding: 100px;
-  display: none;
-}
+  .dark-mode-toggle .moon,
+  .dark-mode-toggle .sun {
+    font-size: 20px;
+  }
 
-.popup-container.show {
-  display: block;
-}
+  #toast-container {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+  }
 
-.popup-container .close-button {
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  padding: 20px 30px;
-  cursor: pointer;
-  color: #ddd;
-  background-color: transparent;
-  border: none;
-  font-size: 50pt;
-  font-weight: bold;
-}
-
-.popup-container .close-button:hover {
-  color: #fff;
-  transition: color 0.5s ease;
-}
-
-#diagram-canvas {
-  cursor: crosshair;
+  .toast {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
 }
