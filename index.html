@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +12,7 @@
     <meta property="og:description"
         content="Convert typed text into realistic handwritten-style pages instantly and privately.">
     <meta property="og:type" content="website">
-    
+
     <title>Text-2-Scribble</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +20,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Homemade+Apple&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Caveat:wght@400;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ui-controls.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
@@ -33,13 +32,16 @@
     </button>
 
     <header class="site-header">
-        <h1 class="site-title">Text to Handwriting</h1>
+        <div>
+            <h1 class="site-title">Text to Handwriting</h1>
+            <p class="site-subtitle">Transform your typed text into realistic handwritten pages instantly</p>
+        </div>
     </header>
 
     <main class="main-container">
         <section class="input-section">
             <h2 class="section-title">Input</h2>
-            <p class="section-note">Note: Few changes may reflect only in the generated image and not in the preview</p>
+            <p class="section-subtitle">Click on the paper and start typing...</p>
 
             <div class="paper-container" id="paper-container">
                 <div class="paper" id="paper" data-paper="ruled">
@@ -56,16 +58,35 @@
             </div>
 
             <textarea id="text-input" class="hidden-textarea" placeholder="Type or paste your text here..."
-                 spellcheck="true"></textarea>
+                spellcheck="true"></textarea>
+
+            <div class="stats-bar" id="stats-bar">
+                <div class="stats-item">
+                    <span>Characters:</span>
+                    <strong id="char-count">0</strong>
+                </div>
+                <div class="stats-item">
+                    <span>Words:</span>
+                    <strong id="word-count">0</strong>
+                </div>
+                <div class="stats-item">
+                    <span>Lines:</span>
+                    <strong id="line-count">0</strong>
+                </div>
+            </div>
         </section>
 
         <section class="customization-section">
+            <h2 class="section-title">Customizations <span class="optional-label">(Optional)</span></h2>
+            <p class="section-note">Tip: Some changes may only reflect in the generated image, not in the live
+                preview</p>
+
             <fieldset class="option-fieldset">
                 <legend>Handwriting Options</legend>
                 <div class="fieldset-content">
                     <div class="option-row">
                         <div class="option-group">
-                            <label for="handwriting-font">Handwriting Font</label>
+                            <label for="handwriting-font">Select Font Style</label>
                             <select id="handwriting-font">
                                 <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
                                 <option value="'Liu Jian Mao Cao', cursive">Liu Jian Mao Cao</option>
@@ -106,7 +127,12 @@
                                 <option value="#1a1a1a">Black</option>
                                 <option value="#0D4C92">Dark Blue</option>
                                 <option value="#8B0000">Dark Red</option>
+                                <option value="custom">Custom...</option>
                             </select>
+                        </div>
+                        <div class="option-group" id="custom-color-group" style="display: none;">
+                            <label for="custom-ink-color">Pick Color</label>
+                            <input type="color" id="custom-ink-color" value="#000F55">
                         </div>
                         <div class="option-group">
                             <label for="page-size">Page Size</label>
@@ -143,7 +169,7 @@
                         <div class="option-group">
                             <label for="vertical-position">Vertical Position</label>
                             <div class="input-unit">
-                                <input type="number" id="vertical-position" min="0" max="50" value="5">
+                                <input type="number" id="vertical-position" min="0" max="50" value="12">
                                 <span>px</span>
                             </div>
                         </div>
@@ -170,14 +196,14 @@
                 <div class="fieldset-content">
                     <div class="option-row three-col">
                         <div class="option-group toggle-group">
-                            <label>Paper Margin: <span class="toggle-status" id="margin-status">on</span></label>
+                            <label>Paper Margin: <span class="toggle-status" id="margin-status">ON</span></label>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="margin-toggle" checked>
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
                         <div class="option-group toggle-group">
-                            <label>Paper Lines: <span class="toggle-status" id="lines-status">on</span></label>
+                            <label>Paper Lines: <span class="toggle-status" id="lines-status">ON</span></label>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="lines-toggle" checked>
                                 <span class="toggle-slider"></span>
@@ -195,19 +221,36 @@
                 </div>
             </fieldset>
 
-            <button type="button" class="btn-generate" id="generate-btn">
-                <span class="btn-text">Generate Image</span>
-                <span class="btn-loading">
-                    <span class="spinner"></span>
-                    Generating...
-                </span>
-            </button>
+            <div class="action-buttons">
+                <button type="button" class="btn-generate" id="generate-btn">
+                    <span class="btn-text">Generate Image</span>
+                    <span class="btn-loading">
+                        <span class="spinner"></span>
+                        Generating...
+                    </span>
+                </button>
+            </div>
+
+            <div class="keyboard-shortcuts">
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+                    <span>Generate</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>S</kbd>
+                    <span>Download All</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+                    <span>Undo</span>
+                </div>
+            </div>
         </section>
     </main>
 
     <section class="output-section" id="output-section" style="display: none;">
         <div class="output-header">
-            <h2>Output</h2>
+            <h2>Generated Pages</h2>
             <div class="output-actions">
                 <span class="page-count" id="page-count">0 pages</span>
                 <button type="button" class="btn-secondary" id="clear-all-btn">Clear All</button>
@@ -218,8 +261,21 @@
         </div>
     </section>
 
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="https://github.com/RishiBuilds/text2scribble" target="_blank" rel="noopener noreferrer">
+                ⭐ Star on GitHub
+            </a>
+            <a href="https://www.calligraphr.com" target="_blank" rel="noopener noreferrer">
+                Create Custom Font
+            </a>
+        </div>
+        <p>Made with ❤️ by <a href="https://github.com/RishiBuilds">Rishi</a> • 100% Private - All processing happens in your browser</p>
+    </footer>
+
+    <div id="toast-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
