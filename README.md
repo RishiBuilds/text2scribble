@@ -5,7 +5,7 @@
 **Transform your typed text into authentic handwritten pages — instantly, privately, beautifully.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Made with ❤️](https://img.shields.io/badge/Made_with-❤️-red.svg)](https://github.com/RishiBuilds)
+[![Made with ❤️](https://img.shields.io/badge/Made_with-❤️-green.svg)](https://github.com/RishiBuilds)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/RishiBuilds/text2scribble/graphs/commit-activity)
 [![GitHub issues](https://img.shields.io/github/issues/RishiBuilds/text2scribble)](https://github.com/RishiBuilds/text2scribble/issues)
 
