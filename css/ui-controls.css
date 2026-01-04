@@ -1,0 +1,136 @@
+.dark-mode-toggle {
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  border: none;
+  background: var(--elevation-background);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+body:not(.user-is-tabbing) .dark-mode-toggle:focus {
+  outline: none;
+}
+
+.dark-mode-toggle .moon,
+.dark-mode-toggle .sun {
+  font-size: 20px;
+  line-height: 1;
+}
+
+body .dark-mode-toggle .moon {
+  display: none;
+}
+
+body .dark-mode-toggle .sun {
+  display: inline-block;
+}
+
+body.dark .dark-mode-toggle .moon {
+  display: inline-block;
+}
+
+body.dark .dark-mode-toggle .sun {
+  display: none;
+}
+
+.switch-toggle {
+  position: relative;
+  display: block;
+  margin-top: 6px;
+  cursor: pointer;
+  width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  background-color: var(--elevation-background);
+}
+
+.switch-toggle input {
+  position: relative;
+  top: 4px;
+  left: 4px;
+  z-index: -1;
+}
+
+.switch-toggle div {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #9994;
+  transition: 0.1s ease;
+}
+
+.switch-toggle input:focus+div {
+  outline: 2px solid var(--primary-color);
+}
+
+.switch-toggle input:checked+div {
+  left: 28px;
+  background-color: #999f;
+}
+
+.switch-toggle.outer div {
+  width: 16px;
+  height: 16px;
+  top: 4px;
+  left: 5px;
+}
+
+@media (max-width: 768px) {
+  .dark-mode-toggle {
+    right: 15px;
+    top: 15px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  z-index: 999999;
+  color: #ddd;
+  padding: 100px;
+  display: none;
+}
+
+.popup-container.show {
+  display: block;
+}
+
+.popup-container .close-button {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  padding: 20px 30px;
+  cursor: pointer;
+  color: #ddd;
+  background-color: transparent;
+  border: none;
+  font-size: 50pt;
+  font-weight: bold;
+}
+
+.popup-container .close-button:hover {
+  color: #fff;
+  transition: color 0.5s ease;
+}
+
+#diagram-canvas {
+  cursor: crosshair;
+}
