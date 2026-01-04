@@ -13,7 +13,7 @@
 
 </div>
 
-![Text2Scribble Output Preview](text2scribble-output.png)
+  <img src="text2scribble-output.png" alt="Text2Scribble Output Preview" width="400px" />
 
 ---
 
