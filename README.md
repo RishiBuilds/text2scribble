@@ -13,7 +13,9 @@
 
 </div>
 
+<p align="center">
   <img src="text2scribble-output.png" alt="Text2Scribble Output Preview" width="400px" />
+</p>
 
 ---
 
