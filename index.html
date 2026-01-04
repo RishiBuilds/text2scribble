@@ -1,99 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Convert typed text into realistic handwriting. Customize fonts, colors, and spacing to create authentic handwritten documents.">
+    <meta name="description"
+        content="Convert typed text into realistic handwriting. Create authentic handwritten assignments, notes, and documents instantly in your browser.">
+    <meta name="keywords" content="handwriting, text to handwriting, handwritten notes, assignment generator, scribble">
+    <meta name="author" content="Rishi">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Text2Scribble - Text to Handwriting Converter">
+    <meta property="og:description"
+        content="Convert typed text into realistic handwritten-style pages instantly and privately.">
+    <meta property="og:type" content="website">
+    
     <title>Text-2-Scribble</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Homemade+Apple&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=Caveat:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
+
 <body>
-    <main class="form-container">
-        
-        <section class="controls-section">
-            <div class="control-group">
-                <label for="handwriting-font">Handwriting Font</label>
-                <select id="handwriting-font">
-                    <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
-                    <option value="'Liu Jian Mao Cao', cursive">Liu Jian Mao Cao</option>
-                    <option value="'Caveat', cursive">Caveat</option>
-                    <option value="'Long Cang', cursive">Long Cang</option>
-                </select>
-            </div>
+    <button class="dark-mode-toggle" id="dark-mode-toggle" title="Toggle Dark Mode">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+    </button>
 
-            <p class="separator" role="presentation">— OR —</p>
+    <header class="site-header">
+        <h1 class="site-title">Text to Handwriting</h1>
+    </header>
 
-            <div class="control-group">
-                <label for="font-file">
-                    Upload Your Own Handwriting Font 
-                    <small class="label-hint">(supports .ttf, .otf, .woff)</small>
-                </label>
-                <small id="font-help" class="help-text">
-                    Create your own font at <a target="_blank" rel="noopener noreferrer" href="https://www.calligraphr.com">Calligraphr.com</a>
-                </small>
-                <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2"/>
-            </div>
-            
-            <div class="control-group">
-                <label for="ink-color">Pen Ink Color</label>
-                <select id="ink-color">
-                    <option value="#000F55" selected>Blue</option>
-                    <option value="#333">Black</option>
-                    <option value="#0D4C92">Dark Blue</option>
-                </select>
-            </div>
-            
-            <div class="row responsive-row">
-                <div class="col">
-                    <label for="font-size">Font Size</label>
-                    <div class="input-group">
-                        <input type="number" min="8" max="24" value="12" id="font-size"/>
-                        <span class="unit">pt</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="top-padding">Vertical Position</label>
-                    <div class="input-group">
-                        <input type="number" min="0" max="50" value="0" id="top-padding"/>
-                        <span class="unit">px</span>
-                    </div>
-                </div>
-                <div class="col">
-                    <label for="word-spacing">Word Spacing</label>
-                    <div class="input-group">
-                        <input type="number" min="0" max="20" value="3" id="word-spacing"/>
-                        <span class="unit">px</span>
+    <main class="main-container">
+        <section class="input-section">
+            <h2 class="section-title">Input</h2>
+            <p class="section-note">Note: Few changes may reflect only in the generated image and not in the preview</p>
+
+            <div class="paper-container" id="paper-container">
+                <div class="paper" id="paper" data-paper="ruled">
+                    <div class="paper-header" id="paper-header"></div>
+                    <div class="paper-margin-left" id="paper-margin-left"></div>
+                    <div class="paper-body">
+                        <div class="paper-content-wrapper">
+                            <div class="ruled-lines" id="content-ruled-lines"></div>
+                            <div class="paper-content" id="paper-content">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <button class="generate-image" type="button">
-                Generate Handwriting Image
-            </button>
-            <small class="help-text download-tip">
-                <strong>Tip:</strong> Right-click the generated image and select "Save image as..." to download
-            </small>
+            <textarea id="text-input" class="hidden-textarea" placeholder="Type or paste your text here..."
+                 spellcheck="true"></textarea>
         </section>
-        
-        <div class="row content-row">
-            <div class="col editor-col">
-                <div class="page" role="region">
-                    <div class="overlay" aria-hidden="true"></div>
-                    <div class="text-area" 
-                         contenteditable="true" 
-                         role="textbox" 
-                         aria-multiline="true"
-                         spellcheck="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut rhoncus dui eget tortor feugiat iaculis. Morbi et dolor in felis viverra efficitur. Integer id laoreet arcu. Mauris turpis nibh, scelerisque sed tristique non, hendrerit in erat. Duis interdum nisl risus, ac ultrices ipsum auctor at. Aliquam faucibus iaculis metus sit amet tincidunt. Vestibulum cursus urna vel nunc imperdiet suscipit. Ut eu augue egestas, porta orci lobortis, pharetra orci. Morbi eu tellus quis nisi tempor accumsan nec eu urna. In adipiscing elit. Sed sit amet ligula id elit tempus molestie. Ut et lectus faucibus, pharetra augue sed, dictum tellus. Aenean id sem consectetur, interdum nisl tempor, ullamcorper tortor. Mauris quis fermentum augue. Phasellus ac nisl hendrerit, fringilla enim aliquam, placerat odio. Ut tortor nisi, pellentesque sed nisi at, hendrerit imperdiet turpis. Proin interdum porttitor metus at hendrerit. Proin ipsum nisl, lacinia vitae purus ullamcorper.</div>
+
+        <section class="customization-section">
+            <fieldset class="option-fieldset">
+                <legend>Handwriting Options</legend>
+                <div class="fieldset-content">
+                    <div class="option-row">
+                        <div class="option-group">
+                            <label for="handwriting-font">Handwriting Font</label>
+                            <select id="handwriting-font">
+                                <option value="'Homemade Apple', cursive" selected>Homemade Apple</option>
+                                <option value="'Liu Jian Mao Cao', cursive">Liu Jian Mao Cao</option>
+                                <option value="'Long Cang', cursive">Long Cang</option>
+                                <option value="'Caveat', cursive">Caveat</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="font-file">
+                                Upload your <a href="https://www.calligraphr.com" target="_blank"
+                                    rel="noopener noreferrer">handwriting font</a>
+                            </label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2">
+                                <button type="button" class="file-btn">Choose File</button>
+                                <span class="file-name" id="font-file-name">No file chosen</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div id="output" class="col output" role="region" aria-live="polite"></div>
-        </div>
+            </fieldset>
+
+            <fieldset class="option-fieldset">
+                <legend>Page & Text Options</legend>
+                <div class="fieldset-content">
+                    <div class="option-row five-col">
+                        <div class="option-group">
+                            <label for="font-size">Font Size</label>
+                            <div class="input-unit">
+                                <input type="number" id="font-size" min="8" max="30" value="10">
+                                <span>pt</span>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label for="ink-color-select">Ink Color</label>
+                            <select id="ink-color-select">
+                                <option value="#000F55" selected>Blue</option>
+                                <option value="#1a1a1a">Black</option>
+                                <option value="#0D4C92">Dark Blue</option>
+                                <option value="#8B0000">Dark Red</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="page-size">Page Size</label>
+                            <select id="page-size">
+                                <option value="a4" selected>A4</option>
+                                <option value="letter">Letter</option>
+                                <option value="legal">Legal</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="effects-select">Effects</label>
+                            <select id="effects-select">
+                                <option value="shadows" selected>Shadows</option>
+                                <option value="none">None</option>
+                                <option value="ink-bleed">Ink Bleed</option>
+                            </select>
+                        </div>
+                        <div class="option-group">
+                            <label for="resolution">Resolution</label>
+                            <select id="resolution">
+                                <option value="normal" selected>Normal</option>
+                                <option value="high">High</option>
+                                <option value="ultra">Ultra</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="option-fieldset">
+                <legend>Spacing Options</legend>
+                <div class="fieldset-content">
+                    <div class="option-row three-col">
+                        <div class="option-group">
+                            <label for="vertical-position">Vertical Position</label>
+                            <div class="input-unit">
+                                <input type="number" id="vertical-position" min="0" max="50" value="5">
+                                <span>px</span>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label for="word-spacing">Word Spacing</label>
+                            <div class="input-unit">
+                                <input type="number" id="word-spacing" min="0" max="20" value="0">
+                                <span>px</span>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label for="letter-spacing">Letter Spacing</label>
+                            <div class="input-unit">
+                                <input type="number" id="letter-spacing" min="0" max="5" value="0" step="0.5">
+                                <span>pt</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="option-fieldset">
+                <legend>Margin & Line Options</legend>
+                <div class="fieldset-content">
+                    <div class="option-row three-col">
+                        <div class="option-group toggle-group">
+                            <label>Paper Margin: <span class="toggle-status" id="margin-status">on</span></label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="margin-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="option-group toggle-group">
+                            <label>Paper Lines: <span class="toggle-status" id="lines-status">on</span></label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="lines-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="option-group">
+                            <label for="paper-image">Upload Paper Background</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="paper-image" accept="image/*">
+                                <button type="button" class="file-btn">Choose File</button>
+                                <span class="file-name" id="paper-image-name">No file chosen</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <button type="button" class="btn-generate" id="generate-btn">
+                <span class="btn-text">Generate Image</span>
+                <span class="btn-loading">
+                    <span class="spinner"></span>
+                    Generating...
+                </span>
+            </button>
+        </section>
     </main>
-    
-    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script defer src="script.js"></script>
+
+    <section class="output-section" id="output-section" style="display: none;">
+        <div class="output-header">
+            <h2>Output</h2>
+            <div class="output-actions">
+                <span class="page-count" id="page-count">0 pages</span>
+                <button type="button" class="btn-secondary" id="clear-all-btn">Clear All</button>
+                <button type="button" class="btn-primary" id="download-btn" disabled>Download All</button>
+            </div>
+        </div>
+        <div class="output-pages" id="output-pages">
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
