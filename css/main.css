@@ -1083,6 +1083,22 @@ body.dark .option-group select {
   color: var(--primary-color);
 }
 
+.footer-credits {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.footer-credits p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.footer-credits .privacy-note {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
 .tooltip {
   position: relative;
   cursor: help;
