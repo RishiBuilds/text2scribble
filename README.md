@@ -1,7 +1,10 @@
 
 
 <div align="center">
-# Text2Scribble
+
+<h2>Text2Scribble</h2>
+
+<br/>
 **Text → Scribble → Image**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
