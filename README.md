@@ -1,7 +1,7 @@
-# Text2Scribble
+
 
 <div align="center">
-
+# Text2Scribble
 **Text → Scribble → Image**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
