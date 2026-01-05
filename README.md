@@ -217,14 +217,14 @@ Want to use your actual handwriting?
 ```
 text2scribble/
 ├── css/
-│   ├── main.css            # Base layout and typography
-│   └── ui-controls.css     # Components, buttons, and switches
+│   ├── main.css              # Base layout and typography
+│   └── ui-controls.css       # Components, buttons, and switches
 ├── images/
-│   ├── app_ui_dark.png     # Dark theme interface
-│   └── app_ui_light.png    # Light theme interface
-├── index.html           # Main application structure
-├── script.js            # Core logic, event handling, and rendering
-├── favicon.ico          # Application icon
+│   ├── app_ui_dark.png       # Dark theme interface
+│   └── app_ui_light.png      # Light theme interface
+├── index.html                # Main application structure
+├── script.js                 # Core logic, event handling, and rendering
+├── favicon.ico               # Application icon
 └── text2scribble-output.png  # Sample output image
 ```
 
@@ -287,6 +287,3 @@ If you find this project helpful, please consider:
   <strong>Made with ❤️ by <a href="https://github.com/RishiBuilds">RishiBuilds</a></strong>
 </p>
 
-<p align="center">
-  <a href="#-text2scribble">Back to Top</a>
-</p>
