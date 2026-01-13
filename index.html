@@ -117,6 +117,49 @@
                 </div>
             </fieldset>
 
+            <fieldset class="option-fieldset scribble-controls">
+                <legend>✏️ Scribble Style Controls</legend>
+                <div class="fieldset-content">
+                    <div class="option-row two-col">
+                        <div class="option-group">
+                            <label for="scribble-style">Scribble Style</label>
+                            <select id="scribble-style">
+                                <option value="clean-doodle" selected>Clean Doodle</option>
+                                <option value="rough-sketch">Rough Sketch</option>
+                                <option value="artistic">Artistic Scribble</option>
+                                <option value="childlike">Child-like Scribble</option>
+                            </select>
+                            <span class="style-description" id="style-description">Neat and legible handwriting with minimal variation</span>
+                        </div>
+                        <div class="option-group">
+                            <label for="stroke-density">Stroke Density</label>
+                            <select id="stroke-density">
+                                <option value="light">Light</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="heavy">Heavy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="option-row two-col" style="margin-top: 14px;">
+                        <div class="option-group">
+                            <label for="randomness-level">Randomness / Jitter</label>
+                            <div class="range-slider-wrapper">
+                                <input type="range" id="randomness-level" min="0" max="100" value="50" class="range-slider">
+                                <span class="range-value" id="randomness-value">50%</span>
+                            </div>
+                        </div>
+                        <div class="option-group toggle-group">
+                            <label>Adaptive Mode: <span class="toggle-status" id="adaptive-status">ON</span></label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="adaptive-mode" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <p class="scribble-tip">Adaptive mode adjusts variations based on text length for optimal readability</p>
+                </div>
+            </fieldset>
+
             <fieldset class="option-fieldset">
                 <legend>Page & Text Options</legend>
                 <div class="fieldset-content">

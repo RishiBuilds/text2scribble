@@ -554,6 +554,10 @@ body.dark .option-group select {
   grid-template-columns: repeat(3, 1fr);
 }
 
+.option-row.two-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .option-row.five-col {
   grid-template-columns: repeat(5, 1fr);
 }
@@ -1038,18 +1042,51 @@ body.dark .option-group select {
 
 .paper.text-variation .handwriting-word {
   display: inline-block;
+  transition: transform 0.1s ease;
 }
 
-.paper.text-variation .handwriting-word:nth-child(3n) {
-  transform: rotate(0.3deg);
+.handwriting-char {
+  display: inline-block;
 }
 
-.paper.text-variation .handwriting-word:nth-child(5n) {
-  transform: rotate(-0.2deg);
+.handwriting-word.wobbled {
+  display: inline-block;
 }
 
-.paper.text-variation .handwriting-word:nth-child(7n) {
-  transform: translateY(0.5px);
+.truncation-notice {
+  font-size: 0.7em;
+  font-style: italic;
+  color: var(--font-color-secondary);
+  opacity: 0.7;
+  margin-top: 20px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  font-family: var(--font-family-primary);
+}
+
+.page-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--font-color-secondary);
+  background: var(--secondary-button-bg);
+}
+
+.page-info .page-number {
+  padding: 0;
+  background: none;
+}
+
+.page-info .page-style {
+  font-size: 0.7rem;
+  color: var(--primary-color);
+  background: rgba(var(--primary-rgb), 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
 .site-footer {
@@ -1152,6 +1189,119 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 5px;
 }
 
+.scribble-controls {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.03) 0%, rgba(var(--primary-rgb), 0.08) 100%);
+}
+
+.scribble-controls legend {
+  color: var(--primary-color);
+}
+
+.style-description {
+  font-size: 0.7rem;
+  color: var(--font-color-secondary);
+  font-style: italic;
+  margin-top: 4px;
+  line-height: 1.4;
+  min-height: 2em;
+}
+
+.scribble-tip {
+  font-size: 0.72rem;
+  color: var(--font-color-secondary);
+  margin: 14px 0 0;
+  padding: 8px 12px;
+  background: rgba(var(--primary-rgb), 0.06);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary-color);
+}
+
+.range-slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg,
+      var(--field-borders) 0%,
+      rgba(var(--primary-rgb), 0.3) 50%,
+      var(--primary-color) 100%);
+  outline: none;
+  transition: all 0.2s ease;
+  border: none;
+  padding: 0;
+}
+
+.range-slider:hover {
+  background: linear-gradient(90deg,
+      var(--field-borders) 0%,
+      rgba(var(--primary-rgb), 0.5) 50%,
+      var(--primary-color) 100%);
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-button-bg);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(var(--primary-rgb), 0.4);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-button-bg);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.range-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  min-width: 40px;
+  text-align: right;
+}
+
+[data-scribble-style="rough-sketch"] .paper-content {
+  letter-spacing: -0.3px;
+}
+
+[data-scribble-style="artistic"] .paper-content {
+  letter-spacing: 0.3px;
+}
+
+[data-scribble-style="childlike"] .paper-content {
+  letter-spacing: 1.5px;
+}
+
+[data-stroke-density="light"] .paper-content {
+  opacity: 0.85;
+}
+
+[data-stroke-density="heavy"] .paper-content {
+  font-weight: 500;
+}
+
 @media (max-width: 1200px) {
   body {
     padding: 80px 40px 40px;
@@ -1201,10 +1351,25 @@ input[type="color"]::-webkit-color-swatch {
   }
 
   .option-row,
+  .option-row.two-col,
   .option-row.three-col,
   .option-row.five-col {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+
+  .scribble-tip {
+    font-size: 0.7rem;
+  }
+
+  .range-slider-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .range-value {
+    text-align: center;
   }
 
   .option-fieldset {

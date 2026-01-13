@@ -1,6 +1,6 @@
 const CONFIG = {
     CANVAS_SCALE: 2,
-    DEBOUNCE_DELAY: 150,
+    DEBOUNCE_DELAY: 200,
     MIN_FONT_SIZE: 8,
     MAX_FONT_SIZE: 30,
     DEFAULT_FONT_SIZE: 10,
@@ -11,16 +11,106 @@ const CONFIG = {
     DEFAULT_INK_COLOR: '#000F55',
     DEFAULT_FONT: "'Homemade Apple', cursive",
     TOAST_DURATION: 3000,
-    MAX_UNDO_HISTORY: 50
+    MAX_UNDO_HISTORY: 50,
+    MAX_PREVIEW_CHARS: 8000,
+    VARIATION_SEED_LENGTH: 50
 };
 
+// Font-specific configurations
 const FONT_CONFIGS = {
-    "'Homemade Apple', cursive": { fontSize: 10, verticalPosition: 12 },
-    "'Liu Jian Mao Cao', cursive": { fontSize: 14, verticalPosition: 8 },
-    "'Long Cang', cursive": { fontSize: 15, verticalPosition: 10 },
-    "'Caveat', cursive": { fontSize: 15, verticalPosition: 10 }
+    "'Homemade Apple', cursive": { fontSize: 10, verticalPosition: 12, baselineAdjust: 0 },
+    "'Liu Jian Mao Cao', cursive": { fontSize: 14, verticalPosition: 8, baselineAdjust: 2 },
+    "'Long Cang', cursive": { fontSize: 15, verticalPosition: 10, baselineAdjust: 1 },
+    "'Caveat', cursive": { fontSize: 15, verticalPosition: 10, baselineAdjust: 0 }
 };
 
+// Scribble style presets with variation parameters
+const SCRIBBLE_STYLES = {
+    'clean-doodle': {
+        name: 'Clean Doodle',
+        description: 'Neat and legible handwriting with minimal variation',
+        rotation: { min: -0.3, max: 0.3 },
+        translateY: { min: -0.5, max: 0.5 },
+        translateX: { min: -0.2, max: 0.2 },
+        scale: { min: 0.99, max: 1.01 },
+        letterSpacingBonus: 0,
+        inkIntensity: 1.0,
+        textShadow: 'none',
+        characterWobble: false,
+        pressureVariation: { min: 0.95, max: 1.05 }
+    },
+    'rough-sketch': {
+        name: 'Rough Sketch',
+        description: 'Quick, energetic strokes with visible imperfections',
+        rotation: { min: -2, max: 2 },
+        translateY: { min: -2, max: 2 },
+        translateX: { min: -1, max: 1 },
+        scale: { min: 0.95, max: 1.05 },
+        letterSpacingBonus: -0.3,
+        inkIntensity: 0.85,
+        textShadow: '1px 1px 2px rgba(0,0,0,0.15)',
+        characterWobble: true,
+        pressureVariation: { min: 0.8, max: 1.2 }
+    },
+    'artistic': {
+        name: 'Artistic Scribble',
+        description: 'Elegant, flowing handwriting with artistic flair',
+        rotation: { min: -1, max: 1 },
+        translateY: { min: -1.2, max: 1.2 },
+        translateX: { min: -0.5, max: 0.5 },
+        scale: { min: 0.97, max: 1.03 },
+        letterSpacingBonus: 0.3,
+        inkIntensity: 1.1,
+        textShadow: '0.5px 0.5px 1px rgba(0,15,85,0.25)',
+        characterWobble: false,
+        pressureVariation: { min: 0.85, max: 1.15 }
+    },
+    'childlike': {
+        name: 'Child-like Scribble',
+        description: 'Playful, irregular handwriting with larger variations',
+        rotation: { min: -4, max: 4 },
+        translateY: { min: -3, max: 3 },
+        translateX: { min: -2, max: 2 },
+        scale: { min: 0.9, max: 1.1 },
+        letterSpacingBonus: 1.5,
+        inkIntensity: 0.9,
+        textShadow: '1px 1px 0px rgba(0,0,0,0.08)',
+        characterWobble: true,
+        pressureVariation: { min: 0.7, max: 1.3 }
+    }
+};
+
+// Stroke density configurations
+const STROKE_DENSITIES = {
+    'light': {
+        inkOpacity: 0.75,
+        strokeWidth: 0.9,
+        shadowIntensity: 0.5
+    },
+    'medium': {
+        inkOpacity: 1.0,
+        strokeWidth: 1.0,
+        shadowIntensity: 1.0
+    },
+    'heavy': {
+        inkOpacity: 1.0,
+        strokeWidth: 1.15,
+        shadowIntensity: 1.5
+    }
+};
+
+// Language detection patterns and configurations
+const LANGUAGE_CONFIGS = {
+    'en': { direction: 'ltr', fontFallback: 'cursive' },
+    'zh': { direction: 'ltr', fontFallback: '"Noto Sans SC", sans-serif' },
+    'ar': { direction: 'rtl', fontFallback: '"Noto Sans Arabic", sans-serif' },
+    'he': { direction: 'rtl', fontFallback: '"Noto Sans Hebrew", sans-serif' },
+    'hi': { direction: 'ltr', fontFallback: '"Noto Sans Devanagari", sans-serif' },
+    'ja': { direction: 'ltr', fontFallback: '"Noto Serif JP", serif' },
+    'ko': { direction: 'ltr', fontFallback: '"Noto Sans KR", sans-serif' }
+};
+
+// Application state
 const state = {
     currentFont: CONFIG.DEFAULT_FONT,
     customFontLoaded: null,
@@ -43,9 +133,18 @@ const state = {
     generatedPages: [],
     nextPageId: 1,
 
+    scribbleStyle: 'clean-doodle',
+    strokeDensity: 'medium',
+    randomnessLevel: 50,
+    adaptiveMode: true,
+    detectedLanguage: 'en',
+
     undoHistory: [],
     redoHistory: [],
-    lastSavedText: ''
+    lastSavedText: '',
+
+    lastRenderTime: 0,
+    isRendering: false
 };
 
 const elements = {
@@ -68,6 +167,12 @@ const elements = {
     resolution: null,
     paperImage: null,
     paperImageName: null,
+    scribbleStyle: null,
+    strokeDensity: null,
+    randomnessLevel: null,
+    randomnessValue: null,
+    adaptiveMode: null,
+    styleDescription: null,
 
     textInput: null,
     paper: null,
@@ -102,6 +207,17 @@ function debounce(func, wait) {
     };
 }
 
+function throttle(func, limit) {
+    let inThrottle;
+    return function (...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
 function validateNumber(value, min, max, defaultValue) {
     const num = parseFloat(value);
     if (isNaN(num)) return defaultValue;
@@ -114,28 +230,195 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+    return Math.abs(hash);
+}
+
+function seededRandom(seed) {
+    let currentSeed = seed;
+    return function () {
+        currentSeed = (currentSeed * 1103515245 + 12345) & 0x7fffffff;
+        return currentSeed / 0x7fffffff;
+    };
+}
+
+function getVariation(rng, intensity, min, max) {
+    const normalizedIntensity = intensity / 100; // Convert 0-100 to 0-1
+    const midpoint = (min + max) / 2;
+    const range = (max - min) / 2;
+    const variation = (rng() - 0.5) * 2 * normalizedIntensity * range;
+    return midpoint + variation;
+}
+
+function detectLanguage(text) {
+    if (!text || text.length === 0) return 'en';
+
+    if (/[\u4e00-\u9fff]/.test(text)) return 'zh'; // Chinese
+    if (/[\u0600-\u06FF\u0750-\u077F]/.test(text)) return 'ar'; // Arabic
+    if (/[\u0590-\u05FF]/.test(text)) return 'he'; // Hebrew
+    if (/[\u0900-\u097F]/.test(text)) return 'hi'; // Hindi/Devanagari
+    if (/[\u3040-\u309F\u30A0-\u30FF]/.test(text)) return 'ja'; // Japanese
+    if (/[\uAC00-\uD7AF]/.test(text)) return 'ko'; // Korean
+
+    return 'en';
+}
+
+function getTextDirection(text) {
+    const lang = detectLanguage(text);
+    return LANGUAGE_CONFIGS[lang]?.direction || 'ltr';
+}
+
+function calculateTextComplexity(text) {
+    if (!text || !text.trim()) {
+        return { wordCount: 0, avgWordLength: 0, paragraphCount: 0, complexity: 'empty' };
+    }
+
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+    const wordCount = words.length;
+    const totalLength = words.reduce((sum, w) => sum + w.length, 0);
+    const avgWordLength = wordCount > 0 ? totalLength / wordCount : 0;
+    const paragraphCount = text.split(/\n\n+/).filter(p => p.trim()).length;
+
+    let complexity;
+    if (wordCount === 0) complexity = 'empty';
+    else if (wordCount < 15) complexity = 'simple';
+    else if (wordCount < 80) complexity = 'moderate';
+    else if (wordCount < 300) complexity = 'detailed';
+    else complexity = 'complex';
+
+    return { wordCount, avgWordLength, paragraphCount, complexity };
+}
+
+function getAdaptiveSettings(complexity) {
+    if (!state.adaptiveMode) {
+        return { variationMultiplier: 1.0, letterSpacingBonus: 0, lineHeightMultiplier: 1.0 };
+    }
+
+    switch (complexity.complexity) {
+        case 'empty':
+        case 'simple':
+            return {
+                variationMultiplier: 1.4,
+                letterSpacingBonus: 0.8,
+                lineHeightMultiplier: 1.05
+            };
+        case 'moderate':
+            return {
+                variationMultiplier: 1.0,
+                letterSpacingBonus: 0,
+                lineHeightMultiplier: 1.0
+            };
+        case 'detailed':
+            return {
+                variationMultiplier: 0.7,
+                letterSpacingBonus: -0.2,
+                lineHeightMultiplier: 0.98
+            };
+        case 'complex':
+            return {
+                variationMultiplier: 0.5,
+                letterSpacingBonus: -0.3,
+                lineHeightMultiplier: 0.95
+            };
+        default:
+            return { variationMultiplier: 1.0, letterSpacingBonus: 0, lineHeightMultiplier: 1.0 };
+    }
+}
+
+function normalizeWhitespace(text) {
+    return text.replace(/\t/g, '    ');
+}
+
+function hasEmojis(text) {
+    const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E0}-\u{1F1FF}]/gu;
+    return emojiRegex.test(text);
+}
+
+function getEmojiFallbackFont() {
+    return '"Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif';
+}
+
 function textToHandwriting(text) {
-    if (!text.trim()) {
+    if (!text || !text.trim()) {
         return '<span class="handwriting-placeholder">Your handwritten text will appear here...</span>';
     }
 
-    const paragraphs = text.split(/\n\n+/);
+    const normalizedText = normalizeWhitespace(text);
+    const complexity = calculateTextComplexity(normalizedText);
+    const adaptiveSettings = getAdaptiveSettings(complexity);
+    const style = SCRIBBLE_STYLES[state.scribbleStyle] || SCRIBBLE_STYLES['clean-doodle'];
+    const density = STROKE_DENSITIES[state.strokeDensity] || STROKE_DENSITIES['medium'];
+    const seed = hashString(normalizedText.substring(0, CONFIG.VARIATION_SEED_LENGTH));
+    const rng = seededRandom(seed);
+
+    const effectiveRandomness = state.randomnessLevel * adaptiveSettings.variationMultiplier;
+
+    const paragraphs = normalizedText.split(/\n\n+/);
 
     return paragraphs.map((para, pIndex) => {
         const lines = para.split(/\n/);
 
-        const processedLines = lines.map(line => {
+        const processedLines = lines.map((line, lIndex) => {
             const words = line.split(/(\s+)/);
+
             return words.map((word, wIndex) => {
                 if (word.match(/^\s+$/)) {
                     return word;
                 }
-                return `<span class="handwriting-word" data-index="${wIndex}">${escapeHtml(word)}</span>`;
+
+                if (word.length === 0) return '';
+
+                const rotation = getVariation(rng, effectiveRandomness, style.rotation.min, style.rotation.max);
+                const translateY = getVariation(rng, effectiveRandomness, style.translateY.min, style.translateY.max);
+                const translateX = getVariation(rng, effectiveRandomness, style.translateX.min, style.translateX.max);
+                const scale = getVariation(rng, effectiveRandomness, style.scale.min, style.scale.max);
+
+                const pressure = getVariation(rng, effectiveRandomness,
+                    style.pressureVariation.min, style.pressureVariation.max);
+                const opacity = Math.min(1, density.inkOpacity * pressure * style.inkIntensity);
+
+                const transform = `rotate(${rotation.toFixed(3)}deg) translate(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px) scale(${scale.toFixed(4)})`;
+
+                let wordStyle = `transform: ${transform}; opacity: ${opacity.toFixed(3)};`;
+
+                if (style.textShadow && style.textShadow !== 'none') {
+                    wordStyle += ` text-shadow: ${style.textShadow};`;
+                }
+
+                if (style.characterWobble && effectiveRandomness > 30) {
+                    return renderWobblyWord(word, wIndex, rng, effectiveRandomness, style, opacity);
+                }
+
+                return `<span class="handwriting-word" style="${wordStyle}" data-index="${wIndex}">${escapeHtml(word)}</span>`;
             }).join('');
         }).join('<br>');
 
         return `<p class="handwriting-para" data-para="${pIndex}">${processedLines}</p>`;
     }).join('');
+}
+
+function renderWobblyWord(word, wordIndex, rng, randomness, style, baseOpacity) {
+    const chars = word.split('');
+    const wobbledChars = chars.map((char, cIndex) => {
+        const charRotation = getVariation(rng, randomness * 0.7, style.rotation.min * 0.5, style.rotation.max * 0.5);
+        const charTranslateY = getVariation(rng, randomness * 0.5, -1, 1);
+        const charScale = getVariation(rng, randomness * 0.3, 0.95, 1.05);
+
+        const transform = `rotate(${charRotation.toFixed(2)}deg) translateY(${charTranslateY.toFixed(2)}px) scale(${charScale.toFixed(3)})`;
+
+        return `<span class="handwriting-char" style="display:inline-block; transform:${transform};">${escapeHtml(char)}</span>`;
+    }).join('');
+
+    const wordRotation = getVariation(rng, randomness * 0.5, style.rotation.min * 0.3, style.rotation.max * 0.3);
+    const wordStyle = `transform: rotate(${wordRotation.toFixed(2)}deg); opacity: ${baseOpacity.toFixed(3)};`;
+
+    return `<span class="handwriting-word wobbled" style="${wordStyle}" data-index="${wordIndex}">${wobbledChars}</span>`;
 }
 
 function showToast(message, type = 'success') {
@@ -182,6 +465,52 @@ function updateStats() {
     }
 }
 
+function updatePreview() {
+    if (!elements.paperContent || !elements.textInput) return;
+
+    if (state.isRendering) return;
+    state.isRendering = true;
+
+    const text = elements.textInput.value;
+
+    let previewText = text;
+    let isTruncated = false;
+
+    if (text.length > CONFIG.MAX_PREVIEW_CHARS) {
+        previewText = text.substring(0, CONFIG.MAX_PREVIEW_CHARS);
+        isTruncated = true;
+    }
+
+    const direction = getTextDirection(text);
+    elements.paperContent.setAttribute('dir', direction);
+    elements.paperContent.style.textAlign = direction === 'rtl' ? 'right' : 'left';
+
+    state.detectedLanguage = detectLanguage(text);
+
+    if (hasEmojis(text)) {
+        const currentFont = state.currentFont;
+        elements.paperContent.style.fontFamily = `${currentFont}, ${getEmojiFallbackFont()}`;
+    }
+
+    let renderedContent = textToHandwriting(previewText);
+
+    if (isTruncated) {
+        renderedContent += '<p class="truncation-notice">... [Preview truncated for performance. Full content will appear in generated image]</p>';
+    }
+
+    elements.paperContent.innerHTML = renderedContent;
+
+    state.isRendering = false;
+    state.lastRenderTime = Date.now();
+}
+
+const updatePreviewRAF = debounce(() => {
+    requestAnimationFrame(() => {
+        updatePreview();
+        updateStats();
+    });
+}, CONFIG.DEBOUNCE_DELAY);
+
 function saveToUndoHistory() {
     const currentText = elements.textInput?.value || '';
 
@@ -194,7 +523,6 @@ function saveToUndoHistory() {
     }
 
     state.redoHistory = [];
-
     state.lastSavedText = currentText;
 }
 
@@ -250,7 +578,11 @@ function saveDraft() {
             wordSpacing: state.wordSpacing,
             letterSpacing: state.letterSpacing,
             showLeftMargin: state.showLeftMargin,
-            showLines: state.showLines
+            showLines: state.showLines,
+            scribbleStyle: state.scribbleStyle,
+            strokeDensity: state.strokeDensity,
+            randomnessLevel: state.randomnessLevel,
+            adaptiveMode: state.adaptiveMode
         }
     };
 
@@ -273,8 +605,6 @@ function loadDraft() {
         if (elements.textInput && draft.text) {
             elements.textInput.value = draft.text;
             state.lastSavedText = draft.text;
-            updatePreview();
-            updateStats();
         }
 
         if (draft.settings) {
@@ -282,16 +612,36 @@ function loadDraft() {
                 elements.fontSelect.value = draft.settings.font;
                 state.currentFont = draft.settings.font;
             }
-            if (draft.settings.inkColor && elements.inkColorSelect) {
+            if (draft.settings.inkColor) {
                 state.inkColor = draft.settings.inkColor;
             }
             if (draft.settings.fontSize && elements.fontSize) {
                 elements.fontSize.value = draft.settings.fontSize;
                 state.fontSize = draft.settings.fontSize;
             }
+
+            if (draft.settings.scribbleStyle && elements.scribbleStyle) {
+                elements.scribbleStyle.value = draft.settings.scribbleStyle;
+                state.scribbleStyle = draft.settings.scribbleStyle;
+            }
+            if (draft.settings.strokeDensity && elements.strokeDensity) {
+                elements.strokeDensity.value = draft.settings.strokeDensity;
+                state.strokeDensity = draft.settings.strokeDensity;
+            }
+            if (typeof draft.settings.randomnessLevel === 'number' && elements.randomnessLevel) {
+                elements.randomnessLevel.value = draft.settings.randomnessLevel;
+                state.randomnessLevel = draft.settings.randomnessLevel;
+                updateRandomnessDisplay();
+            }
+            if (typeof draft.settings.adaptiveMode === 'boolean' && elements.adaptiveMode) {
+                elements.adaptiveMode.checked = draft.settings.adaptiveMode;
+                state.adaptiveMode = draft.settings.adaptiveMode;
+            }
         }
 
         applyStyles();
+        updatePreview();
+        updateStats();
         return true;
     } catch (err) {
         console.error('Failed to load draft:', err);
@@ -344,6 +694,13 @@ function cacheElements() {
     elements.paperImage = document.getElementById('paper-image');
     elements.paperImageName = document.getElementById('paper-image-name');
 
+    elements.scribbleStyle = document.getElementById('scribble-style');
+    elements.strokeDensity = document.getElementById('stroke-density');
+    elements.randomnessLevel = document.getElementById('randomness-level');
+    elements.randomnessValue = document.getElementById('randomness-value');
+    elements.adaptiveMode = document.getElementById('adaptive-mode');
+    elements.styleDescription = document.getElementById('style-description');
+
     elements.textInput = document.getElementById('text-input');
     elements.paper = document.getElementById('paper');
     elements.paperContent = document.getElementById('paper-content');
@@ -383,26 +740,29 @@ function generateRuledLines() {
     }
 }
 
-function updatePreview() {
-    if (!elements.paperContent || !elements.textInput) return;
-
-    const text = elements.textInput.value;
-    elements.paperContent.innerHTML = textToHandwriting(text);
-}
-
 function applyStyles() {
     if (!elements.paper || !elements.paperContent) return;
+
+    const style = SCRIBBLE_STYLES[state.scribbleStyle] || SCRIBBLE_STYLES['clean-doodle'];
+    const density = STROKE_DENSITIES[state.strokeDensity] || STROKE_DENSITIES['medium'];
+    const complexity = calculateTextComplexity(elements.textInput?.value || '');
+    const adaptiveSettings = getAdaptiveSettings(complexity);
 
     elements.paperContent.style.fontFamily = state.currentFont;
     elements.paperContent.style.color = state.inkColor;
 
+    const effectiveLetterSpacing = state.letterSpacing + style.letterSpacingBonus + adaptiveSettings.letterSpacingBonus;
+    const effectiveLineHeight = state.lineHeight * adaptiveSettings.lineHeightMultiplier;
+
     elements.paperContent.style.fontSize = `${state.fontSize}pt`;
-    elements.paperContent.style.lineHeight = `${state.lineHeight}px`;
+    elements.paperContent.style.lineHeight = `${effectiveLineHeight}px`;
     elements.paperContent.style.wordSpacing = `${state.wordSpacing}px`;
-    elements.paperContent.style.letterSpacing = `${state.letterSpacing}px`;
+    elements.paperContent.style.letterSpacing = `${effectiveLetterSpacing}px`;
     elements.paperContent.style.paddingTop = `${state.verticalPosition}px`;
 
-    const lineSize = `${state.lineHeight}px`;
+    elements.paperContent.style.setProperty('--stroke-density', density.strokeWidth);
+
+    const lineSize = `${effectiveLineHeight}px`;
     if (state.showLines) {
         elements.paperContent.style.backgroundSize = `100% ${lineSize}`;
         elements.paperContent.style.backgroundPosition = `0 0`;
@@ -429,6 +789,7 @@ function applyStyles() {
         elements.paper.classList.remove('text-variation');
     }
 
+    elements.paper.setAttribute('data-scribble-style', state.scribbleStyle);
     if (state.customPaperImage) {
         elements.paper.style.backgroundImage = `url(${state.customPaperImage})`;
         elements.paper.style.backgroundSize = 'cover';
@@ -486,6 +847,7 @@ function loadCustomFont(file) {
                 }
 
                 applyStyles();
+                updatePreview();
                 showToast('Custom font loaded successfully!');
             })
             .catch(err => {
@@ -532,16 +894,24 @@ async function generateImage() {
         return;
     }
 
-    const text = elements.textInput?.value?.trim();
-    if (!text) {
-        showToast('Please enter some text first!', 'error');
-        return;
+    const text = elements.textInput?.value || '';
+    if (!text.trim()) {
+        const generateBlank = confirm('No text entered. Generate a blank page?');
+        if (!generateBlank) {
+            return;
+        }
     }
+    validateResolutionForContent(text);
 
     elements.generateBtn.classList.add('loading');
     elements.generateBtn.disabled = true;
 
     try {
+        const wasPreviewTruncated = text.length > CONFIG.MAX_PREVIEW_CHARS;
+        if (wasPreviewTruncated) {
+            elements.paperContent.innerHTML = textToHandwriting(text);
+        }
+
         let scale = CONFIG.CANVAS_SCALE;
         if (state.resolution === 'high') scale = 3;
         if (state.resolution === 'ultra') scale = 4;
@@ -560,13 +930,18 @@ async function generateImage() {
 
         elements.paper.style.transform = originalTransform;
         elements.paper.classList.remove('generating');
+        if (wasPreviewTruncated) {
+            updatePreview();
+        }
 
         const imageUrl = canvas.toDataURL('image/png');
         const pageId = state.nextPageId++;
         const newPage = {
             id: pageId,
             imageUrl: imageUrl,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            textLength: text.length,
+            scribbleStyle: state.scribbleStyle
         };
         state.generatedPages.push(newPage);
         addPageToOutput(newPage);
@@ -588,12 +963,21 @@ async function generateImage() {
     }
 }
 
+function validateResolutionForContent(text) {
+    const textLength = text.length;
+
+    if (state.resolution === 'ultra' && textLength > 15000) {
+        showToast('Ultra resolution may cause memory issues. Consider using High resolution.', 'warning');
+    }
+}
+
 function addPageToOutput(page) {
     const pageCard = document.createElement('div');
     pageCard.className = 'page-card';
     pageCard.dataset.pageId = page.id;
 
     const pageIndex = state.generatedPages.findIndex(p => p.id === page.id) + 1;
+    const styleName = SCRIBBLE_STYLES[page.scribbleStyle]?.name || 'Unknown';
 
     pageCard.innerHTML = `
         <img src="${page.imageUrl}" alt="Page ${pageIndex}" loading="lazy">
@@ -602,7 +986,10 @@ function addPageToOutput(page) {
             <button class="page-action-btn download-btn" title="Download" onclick="downloadPage(${page.id})">⬇️</button>
             <button class="page-action-btn delete-btn" title="Delete" onclick="deletePage(${page.id})">🗑️</button>
         </div>
-        <span class="page-number">Page ${pageIndex}</span>
+        <div class="page-info">
+            <span class="page-number">Page ${pageIndex}</span>
+            <span class="page-style">${styleName}</span>
+        </div>
     `;
 
     elements.outputPages.appendChild(pageCard);
@@ -719,10 +1106,7 @@ function setupPaperEditing() {
         elements.textInput.focus({ preventScroll: true });
     });
 
-    elements.textInput.addEventListener('input', debounce(() => {
-        updatePreview();
-        updateStats();
-    }, CONFIG.DEBOUNCE_DELAY));
+    elements.textInput.addEventListener('input', updatePreviewRAF);
 
     elements.textInput.addEventListener('blur', () => {
         saveToUndoHistory();
@@ -758,6 +1142,7 @@ function handleFontChange(e) {
     }
 
     applyStyles();
+    updatePreview();
 }
 
 function handleFontFileChange(e) {
@@ -783,17 +1168,20 @@ function handleInkColorChange(e) {
     }
 
     applyStyles();
+    updatePreview();
 }
 
 function handleCustomInkColorChange(e) {
     state.customInkColor = e.target.value;
     state.inkColor = e.target.value;
     applyStyles();
+    updatePreview();
 }
 
 const handleFontSizeChange = debounce((e) => {
     state.fontSize = validateNumber(e.target.value, CONFIG.MIN_FONT_SIZE, CONFIG.MAX_FONT_SIZE, CONFIG.DEFAULT_FONT_SIZE);
     applyStyles();
+    updatePreview();
 }, CONFIG.DEBOUNCE_DELAY);
 
 const handleVerticalPositionChange = debounce((e) => {
@@ -806,12 +1194,14 @@ const handleWordSpacingChange = debounce((e) => {
     state.wordSpacing = validateNumber(e.target.value, 0, 20, CONFIG.DEFAULT_WORD_SPACING);
     e.target.value = state.wordSpacing;
     applyStyles();
+    updatePreview();
 }, CONFIG.DEBOUNCE_DELAY);
 
 const handleLetterSpacingChange = debounce((e) => {
     state.letterSpacing = validateNumber(e.target.value, 0, 5, CONFIG.DEFAULT_LETTER_SPACING);
     e.target.value = state.letterSpacing;
     applyStyles();
+    updatePreview();
 }, CONFIG.DEBOUNCE_DELAY);
 
 function handleMarginToggle(e) {
@@ -850,6 +1240,52 @@ function handlePaperImageChange(e) {
     }
 }
 
+function handleScribbleStyleChange(e) {
+    state.scribbleStyle = e.target.value;
+    updateStyleDescription();
+    applyStyles();
+    updatePreview();
+}
+
+function handleStrokeDensityChange(e) {
+    state.strokeDensity = e.target.value;
+    applyStyles();
+    updatePreview();
+}
+
+function handleRandomnessChange(e) {
+    state.randomnessLevel = parseInt(e.target.value, 10);
+    updateRandomnessDisplay();
+    updatePreview();
+}
+
+function handleAdaptiveModeChange(e) {
+    state.adaptiveMode = e.target.checked;
+    updateAdaptiveStatus();
+    applyStyles();
+    updatePreview();
+}
+
+function updateRandomnessDisplay() {
+    if (elements.randomnessValue) {
+        elements.randomnessValue.textContent = `${state.randomnessLevel}%`;
+    }
+}
+
+function updateStyleDescription() {
+    if (elements.styleDescription) {
+        const style = SCRIBBLE_STYLES[state.scribbleStyle];
+        elements.styleDescription.textContent = style?.description || '';
+    }
+}
+
+function updateAdaptiveStatus() {
+    const adaptiveStatus = document.getElementById('adaptive-status');
+    if (adaptiveStatus) {
+        adaptiveStatus.textContent = state.adaptiveMode ? 'ON' : 'OFF';
+    }
+}
+
 function attachEventListeners() {
     const addListener = (el, event, handler) => el?.addEventListener(event, handler);
 
@@ -867,6 +1303,11 @@ function attachEventListeners() {
     addListener(elements.effectsSelect, 'change', handleEffectsChange);
     addListener(elements.resolution, 'change', handleResolutionChange);
     addListener(elements.paperImage, 'change', handlePaperImageChange);
+
+    addListener(elements.scribbleStyle, 'change', handleScribbleStyleChange);
+    addListener(elements.strokeDensity, 'change', handleStrokeDensityChange);
+    addListener(elements.randomnessLevel, 'input', handleRandomnessChange);
+    addListener(elements.adaptiveMode, 'change', handleAdaptiveModeChange);
 
     document.querySelectorAll('.file-input-wrapper').forEach(wrapper => {
         const fileBtn = wrapper.querySelector('.file-btn');
@@ -964,15 +1405,18 @@ function init() {
         return;
     }
 
-    console.log('initializing...');
+    console.log('Initializing...');
 
     cacheElements();
     attachEventListeners();
     setupDarkMode();
     setupPaperEditing();
+    updateRandomnessDisplay();
+    updateStyleDescription();
     applyStyles();
     updatePreview();
     updateStats();
+
     const hasDraft = loadDraft();
     if (hasDraft) {
         showToast('Previous draft restored');
