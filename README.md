@@ -64,8 +64,26 @@
 
 ## 🎨 Key Features
 
+### ✏️ Scribble Style Presets
+
+Choose from 4 unique handwriting styles, each with distinct characteristics:
+
+| Style | Description |
+|-------|-------------|
+| **Clean Doodle** | Neat and legible handwriting with minimal variation |
+| **Rough Sketch** | Quick, energetic strokes with visible imperfections |
+| **Artistic Scribble** | Elegant, flowing handwriting with artistic flair |
+| **Child-like Scribble** | Playful, irregular handwriting with larger variations |
+
+### 🎚️ Advanced Variation Controls
+
+*   **Randomness Slider**: Adjust the jitter/variation intensity from 0-100%
+*   **Stroke Density**: Choose between Light, Medium, or Heavy ink density
+*   **Adaptive Mode**: Automatically adjusts variations based on text length for optimal readability
+*   **Per-Word Variations**: Each word gets unique rotation, translation, scale, and pressure simulation
+
 ### Handwriting & Typography
-*   **Multiple Styles**: Choose from 4 curated handwriting fonts (Homemade Apple, Liu Jian Mao Cao, Long Cang, Caveat)
+*   **Multiple Fonts**: Choose from 4 curated handwriting fonts (Homemade Apple, Liu Jian Mao Cao, Long Cang, Caveat)
 *   **Custom Fonts**: Upload your own `.ttf` or `.otf` font files for personalized handwriting
 *   **Typography Control**: Fine-tune font size (8-30pt), word spacing, letter spacing, and vertical alignment
 *   **Custom Ink Colors**: Select from preset colors (Blue, Black, Dark Blue, Red) or choose any custom color
@@ -76,14 +94,21 @@
 *   **Realism Effects**: 
     *  **Shadows**: Adds subtle depth to ink strokes
     *  **Ink Bleed**: Simulates pen ink absorption into paper
-    *  **Text Variation**: Randomizes positioning for natural handwriting look
+    *  **Pressure Simulation**: Varies opacity per word for natural pen pressure effect
+
+### 🌍 Multi-Language Support
+
+*   **RTL Language Detection**: Automatic support for Arabic, Hebrew, and other right-to-left languages
+*   **Script Detection**: Recognizes Chinese, Japanese, Korean, Hindi, and more
+*   **Emoji Support**: Full emoji rendering with fallback fonts
 
 ### Productivity Tools
 *   **Live Preview**: Real-time rendering as you type
 *   **Auto-Save**: Automatic draft saving to local storage
 *   **Undo/Redo**: Full history support with keyboard shortcuts
-*   **Export Options**: Generate high-resolution PNG images
+*   **Export Options**: Generate high-resolution PNG images (Normal, High, Ultra)
 *   **Batch Actions**: Copy to clipboard or download all pages at once
+*   **Performance Optimized**: Preview virtualization for long documents
 
 ## 🖼️ UI Showcase
 
@@ -158,15 +183,21 @@ Open your browser and navigate to `http://localhost:8000` (or the port shown in 
 *   Type or paste your text—multi-page content is handled automatically
 *   Monitor **real-time stats** (characters, words, lines) at the bottom
 
-### 2️⃣ Customizing Appearance
+### 2️⃣ Customizing Scribble Style
+*   **Scribble Style**: Select from Clean Doodle, Rough Sketch, Artistic, or Child-like
+*   **Stroke Density**: Adjust ink weight (Light, Medium, Heavy)
+*   **Randomness**: Use the slider to control variation intensity (0-100%)
+*   **Adaptive Mode**: Toggle on for automatic optimization based on text length
+
+### 3️⃣ Customizing Appearance
 Use the sidebar controls to personalize your handwriting:
 *   **Handwriting Options**: Change font family or upload custom fonts
 *   **Page & Text Options**: Adjust font size (8-30pt) and ink color
 *   **Spacing Options**: Fine-tune vertical position, word spacing, and letter spacing
 
-### 3️⃣ Exporting
+### 4️⃣ Exporting
 1.  Click the **Generate Image** button
-2.  Review generated pages in the Output section
+2.  Review generated pages in the Output section (shows scribble style used)
 3.  **Download** as PNG or **Copy** to clipboard
 
 ---
@@ -209,6 +240,7 @@ Want to use your actual handwriting?
 | **Styling** | CSS Variables, Flexbox/Grid, Glassmorphism |
 | **Rendering** | `html2canvas` for DOM-to-Image conversion |
 | **Storage** | Browser `localStorage` for state persistence |
+| **Variations** | Seeded PRNG for consistent handwriting variations |
 
 ---
 
@@ -217,13 +249,13 @@ Want to use your actual handwriting?
 ```
 text2scribble/
 ├── css/
-│   ├── main.css              # Base layout and typography
-│   └── ui-controls.css       # Components, buttons, and switches
+│   ├── main.css              # Base layout, scribble styles, and typography
+│   └── ui-controls.css       # Components, buttons, toasts, and switches
 ├── images/
 │   ├── app_ui_dark.png       # Dark theme interface
 │   └── app_ui_light.png      # Light theme interface
 ├── index.html                # Main application structure
-├── script.js                 # Core logic, event handling, and rendering
+├── script.js                 # Core logic, variation engine, and rendering
 ├── favicon.ico               # Application icon
 └── text2scribble-output.png  # Sample output image
 ```
@@ -251,8 +283,9 @@ Contributions make the open-source community an amazing place to learn, inspire,
 
 ### Contribution Ideas
 
+- Add new scribble style presets
 - Add new handwriting fonts
-- Add internationalization support
+- Improve multi-language support
 - Improve mobile responsiveness
 - Fix bugs and improve performance
 - Enhance documentation
