@@ -62,9 +62,9 @@
 
 > **Your Privacy Matters:** All processing happens locally in your browser. Your text never leaves your device or touches any server.
 
-## 🎨 Key Features
+## Key Features
 
-### ✏️ Scribble Style Presets
+### Scribble Style Presets
 
 Choose from 4 unique handwriting styles, each with distinct characteristics:
 
@@ -75,7 +75,7 @@ Choose from 4 unique handwriting styles, each with distinct characteristics:
 | **Artistic Scribble** | Elegant, flowing handwriting with artistic flair |
 | **Child-like Scribble** | Playful, irregular handwriting with larger variations |
 
-### 🎚️ Advanced Variation Controls
+### Advanced Variation Controls
 
 *   **Randomness Slider**: Adjust the jitter/variation intensity from 0-100%
 *   **Stroke Density**: Choose between Light, Medium, or Heavy ink density
@@ -96,7 +96,7 @@ Choose from 4 unique handwriting styles, each with distinct characteristics:
     *  **Ink Bleed**: Simulates pen ink absorption into paper
     *  **Pressure Simulation**: Varies opacity per word for natural pen pressure effect
 
-### 🌍 Multi-Language Support
+### Multi-Language Support
 
 *   **RTL Language Detection**: Automatic support for Arabic, Hebrew, and other right-to-left languages
 *   **Script Detection**: Recognizes Chinese, Japanese, Korean, Hindi, and more
@@ -110,7 +110,7 @@ Choose from 4 unique handwriting styles, each with distinct characteristics:
 *   **Batch Actions**: Copy to clipboard or download all pages at once
 *   **Performance Optimized**: Preview virtualization for long documents
 
-## 🖼️ UI Showcase
+## UI Showcase
 
 <table>
   <tr>
@@ -127,7 +127,7 @@ Choose from 4 unique handwriting styles, each with distinct characteristics:
   </tr>
 </table>
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -202,7 +202,7 @@ Use the sidebar controls to personalize your handwriting:
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## Keyboard Shortcuts
 
 Boost your productivity with these shortcuts:
 
@@ -215,7 +215,7 @@ Boost your productivity with these shortcuts:
 
 ---
 
-## ✍️ Creating Custom Fonts
+## Creating Custom Fonts
 
 Want to use your actual handwriting?
 
@@ -224,9 +224,9 @@ Want to use your actual handwriting?
 3.  Scan/upload the template to generate a `.ttf` file
 4.  In Text2Scribble, select **Upload your handwriting font** and choose your file
 
-🎉 Now you have a digital version of your own handwriting!
+Now you have a digital version of your own handwriting!
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 <p align="center">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
@@ -244,7 +244,7 @@ Want to use your actual handwriting?
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 text2scribble/
@@ -260,7 +260,7 @@ text2scribble/
 └── text2scribble-output.png  # Sample output image
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**!
 
@@ -292,13 +292,13 @@ Contributions make the open-source community an amazing place to learn, inspire,
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more information.
 
 ---
 
-## 💖 Support
+## Support
 
 If you find this project helpful, please consider:
 
